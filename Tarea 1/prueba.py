@@ -9,7 +9,7 @@ import pyaudio
 global estado
 estado = True 
 
-def function_1():
+def grabar():
     global estado
    # the file name output you want to record into
     filename = "recorded.wav"
@@ -60,19 +60,19 @@ def function_1():
     # close the file
     wf.close()
 
-def function_2():
+def detener_grabacion():
     global estado
-    print("Inside The Function 2")
+    print("Escriba cualquier letra + Enter, para terminar de grabar.")
     x=input()
     estado = False
 
 
 
 # Create a new thread
-Thread1 = threading.Thread(target=function_1)
+Thread1 = threading.Thread(target=grabar)
 
 # Create another new thread
-Thread2 = threading.Thread(target=function_2)
+Thread2 = threading.Thread(target=detener_grabacion)
 
 # Start the thread
 Thread1.start()
@@ -84,6 +84,3 @@ Thread2.start()
 Thread2.join()
 Thread1.join()
 
-
-
-print("Done!")
