@@ -1,3 +1,6 @@
+# https://pypi.org/project/PyAudio/
+# https://pypi.org/project/Wave/
+
 from glob import glob
 import threading
 import wave
