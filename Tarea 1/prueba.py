@@ -5,13 +5,31 @@ from glob import glob
 import threading
 import wave
 import pyaudio
+import sounddevice as sd 
+from scipy.io.wavfile import write 
+import wavio as wv 
 
 global estado
 estado = True 
 
+def grabar2():
+    global estado
+    freq = 44100
+    
+    duration = 5
+    
+    while estado:
+        recording = sd.rec(int(duration * freq), samplerate=freq, channels=2) 
+    
+    sd.wait() 
+    
+    write("recording0.wav", freq, recording) 
+    
+    wv.write("recording1.wav", recording, freq, sampwidth=2)
+
 def grabar():
     global estado
-   # the file name output you want to record into
+    #the file name output you want to record into
     filename = "recorded.wav"
     # set the chunk size of 1024 samples
     chunk = 1024
@@ -39,8 +57,7 @@ def grabar():
         # stream.write(data)
         frames.append(data)
         record_seconds = 5
-        
-    print("Finished recording.")
+    
     # stop and close stream
     stream.stop_stream()
     stream.close()
@@ -69,7 +86,7 @@ def detener_grabacion():
 
 
 # Create a new thread
-Thread1 = threading.Thread(target=grabar)
+Thread1 = threading.Thread(target=grabar2)
 
 # Create another new thread
 Thread2 = threading.Thread(target=detener_grabacion)
