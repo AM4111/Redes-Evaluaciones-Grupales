@@ -8,4 +8,5 @@ numpy 1.22.3
 ipython 8.4.0
 librosa 0.9.2
 wavio-0.0.4
+sounddevice 0.4.5
 

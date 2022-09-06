@@ -36,7 +36,7 @@ def grabar():
     # sample format
     FORMAT = pyaudio.paInt16
     # mono, change to 2 if you want stereo
-    channels = 1
+    channels = 2
     # 44100 samples per second
     sample_rate = 44100
     record_seconds = 5
@@ -86,7 +86,7 @@ def detener_grabacion():
 
 
 # Create a new thread
-Thread1 = threading.Thread(target=grabar2)
+Thread1 = threading.Thread(target=grabar)
 
 # Create another new thread
 Thread2 = threading.Thread(target=detener_grabacion)
