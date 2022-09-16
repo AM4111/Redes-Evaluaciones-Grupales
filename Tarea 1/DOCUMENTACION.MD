@@ -6,6 +6,8 @@ IC: 7602-Redes - 2 Semestre 2022.
 
 2018086509 - Jocxan Sandi Batista.
 
+2018093728 - Paula Mariana Bustos Vargas
+
 ---
 # DOCUMENTACIÓN - TAREA CORTA I - Autrum 
 
@@ -29,15 +31,15 @@ Los procesos se inician el el método **grabar_graficar**. Además que se declar
 - q3: Sirve como bandera entre el proceso 1 y 2 es el que lleva el tiempo y permite el envío de datos.
 - q4: Sirve como bandera para saber si se Graba o se Pausa.
 
-### Proceso 1
-Se da con el método **Grabar2**. En este método inicia la grabación del audio por medio del micrófono, este proceso depende del proceso 2 que cada 3 segundo envía la señal a la cola para que se envíen los frames a través de la cola. Por último el método guarda todos los frames como un archivo de audio en un archivo llamado "Recorded.wav" y en un archivo ".txt" llamado **dominio_frecuencia.txt**.
+### Proceso 1: Grabar audio.
+Se da con el método **Grabar2**. En este método inicia la grabación del audio por medio del micrófono, este proceso depende del proceso 2, que cada 3 segundos envía la confirmación a la cola y así se envíen los frames recopilados en este proceso a través de la cola hacia el proceso 3. Por último el método guarda todos los frames como un archivo de audio en un archivo llamado "Recorded.wav" y en un archivo ".txt" llamado **dominio_frecuencia.txt**.
 
 
-### Proceso 2
+### Proceso 2: Timer.
 Se da con el método **Timer**. En este proceso se lleva la cuenta del tiempo a esperar para realizar cada gráfica. Envía la señal para que el proceso 1 envíe la información al proceso 3 cada **n** segundos (n=3).
 
 
-### Proceso 3
+### Proceso 3: Gráficas.
 Se da con el método **grafica_tiempo_real**. En este método se realizan las gráficas del sonido en el dominio del tiempo y la Representación en Frecuencia.
 
 Para esta parte se utilizaron dos fragmentos de código de diferentes fuentes
@@ -47,9 +49,12 @@ La parte que se utiliza aquí es para realizar el análisis de Fourier al sonido
 - La segunda parte está basada en un código de Geeksforgeeks y modificada por Jocxan Sandí:
 La parte que se utiliza aquí es para realizar la gráfica del dominio en el tiempo y la frecuencia de forma cíclica, ya que el proceso envía los datos cada 3 segundos, entonces se actualiza cada 3 segundos.
 
+#### Digrama de flujo de los procesos.
+![Imagen1](imagenes_documentacion/procesos.png)
+
 ## B) Funcionamiento de analizar un audio existente.
 
-Se inicia enel método **audio_bash**.
+Se inicia en el método **audio_bash**.
 Método que recibe el nombre de un archivo ".wav" y realiza las gráficas en el dominio del tiempo y la frecuencia. También utiliza la base del código de Joser Zapata.
 
 1. Solicita el nombre del archivo al usuario con el método **get_nombre_audio**.
@@ -80,6 +85,13 @@ El programa funciona por la línea de comandos por lo que al inicio muestra las 
 En este punto el usuario debe seleccionar lo que desee hacer con el programa.
 
 ### 1. Para grabar inserte 1
+
+**El estado del programa inicia en "Grabando"**
+
+El sistema abre una ventana en la cual se hacen ambas gráficas con el audio de entrada de la computadora. Esta ventana, además tiene 3 botones:
+- Guardar: Termina la ejecución del programa y al finalizar este solicita el nombre que se le desee dar al archivo comprimido .atm, en el cuál se guarda el audio, archivo de datos del dominio del tiempo y un archivo en el cual están los datos del análisis de Fourier. 
+- Pausar: Pausa la grabación y las gráficas y pone el programa en "Pausa". 
+- Grabar: Inicia la grabación en caso de que se haya pausado anteriormente y pone el programa en "Grabando" nuevamente. 
 
 ### 2. Para ver el archivo Autrum inserte 2
 
@@ -134,6 +146,7 @@ Necesita los siguientes módulos:
 - scipy 1.9.1
 - matplotlib 3.5.3
 - numpy 1.22.3
+
 
 ## G) Referencias 
 > Obtener datos de un audio: http://blog.espol.edu.ec/telg1001/audio-en-formato-wav/ 

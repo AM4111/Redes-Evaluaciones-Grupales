@@ -461,6 +461,9 @@ def get_nombre_atm(tipo):
 #### COMPRIMIR Y DESCOMPRIMIR ARCHIVOS  #############
 
 #####################################################
+# Código obtenido de Monty Shokeen
+# https://code.tutsplus.com/es/tutorials/compressing-and-extracting-files-in-python--cms-26816
+
 def comprimir(audio,nombre):
     try:
         bandera = False
