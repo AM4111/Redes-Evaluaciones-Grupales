@@ -86,7 +86,7 @@ En este punto el usuario debe seleccionar lo que desee hacer con el programa.
 
 ### 1. Para grabar inserte 1
 
-**El estado del programa inicia en "Grabando"**
+**El estado del programa inicia en "Pausa".** Por lo que debe darle al botón "Grabar" para iniciar.
 
 El sistema abre una ventana en la cual se hacen ambas gráficas con el audio de entrada de la computadora. Esta ventana, además tiene 3 botones:
 - Guardar: Termina la ejecución del programa y al finalizar este solicita el nombre que se le desee dar al archivo comprimido .atm, en el cuál se guarda el audio, archivo de datos del dominio del tiempo y un archivo en el cual están los datos del análisis de Fourier. 
