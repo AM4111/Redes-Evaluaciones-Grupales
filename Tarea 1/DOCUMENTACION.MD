@@ -1,15 +1,10 @@
-Tecnológico de Costa Rica.
-
-Escuela de Ingeniería en Computación.
-
-IC: 7602-Redes - 2 Semestre 2022.
-
-2018086509 - Jocxan Sandi Batista.
-
+Tecnológico de Costa Rica<br> 
+Escuela de Ingeniería en Computación<br> 
+IC: 7602-Redes  - 2 Semestre 2022 <br> 
+2018086509 - Jocxan Sandi Batista <br> 
 2018093728 - Paula Mariana Bustos Vargas
-
----
-# DOCUMENTACIÓN - TAREA CORTA I - Autrum 
+______________________
+<center> <h1> Tarea - Documentación - Tarea Corta 1 - Autrum </h1> </center> 
 
 ## Índice
 
@@ -147,16 +142,17 @@ Necesita los siguientes módulos:
 - matplotlib 3.5.3
 - numpy 1.22.3
 
+<br> 
 
 ## G) Referencias 
-> Obtener datos de un audio: http://blog.espol.edu.ec/telg1001/audio-en-formato-wav/ 
+> (s.A.). Audio en formato .wav- Señales y sistemas (2018) Recuperado de : http://blog.espol.edu.ec/telg1001/audio-en-formato-wav/
 
-> Representación en Frecuencia: https://joserzapata.github.io/courses/mineria-audio/representacion_audio/
+> Abdou Rockikz. Grabar y guardar audio python (2022) Recuperado de: https://www.thepythoncode.com/article/play-and-record-audio-sound-in-python
 
-> Gráficas normal: https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.html 
+> GeeksforGeeks. (2022) - Gráficas en loop: https://www.geeksforgeeks.org/how-to-update-a-plot-on-same-figure-during-the-loop/ 
 
-> Gráficas en loop: https://www.geeksforgeeks.org/how-to-update-a-plot-on-same-figure-during-the-loop/ 
+> Matplotlib - Visualization with Python. (s. f.).Recuperado de https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.html 
 
-> Comprimir Archivos: https://code.tutsplus.com/es/tutorials/compressing-and-extracting-files-in-python--cms-26816 
+> Monty Shokeen - Comprimir Archivos - envatotuts+ (2016)Recuperado de : https://code.tutsplus.com/es/tutorials/compressing-and-extracting-files-in-python--cms-26816 
 
-> Grabar y guardar: https://www.thepythoncode.com/article/play-and-record-audio-sound-in-python
+>Zapata, J. R. (s. f.). Representacion del Audio. Jose Ricardo Zapata. Recuperado de https://joserzapata.github.io/courses/mineria-audio/representacion_audio/
