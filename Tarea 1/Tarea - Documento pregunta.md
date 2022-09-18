@@ -42,10 +42,24 @@ Ahora bien sabiendo lo anterior y basandos en las graficas generadas en la tarea
 
 Fourier generado por Jocxan
 
-<center><h2>  Agregar Imagen </h2></center>
+![Imagen1](imagenes_documentacion/Jocxan.png)
+
 
 Fourier generado por Mariana
 
 <center><h2>  Agregar Imagen </h2></center>
 
 Se puede observar que las graficas de fourier son diferentes aunque se diga lo mismo ya que el espacio entre las amplitudes de seno y coseno, el rango y la frecuencia (el espectro de voz) generado tambien son distintos.
+
+
+## G) Referencias 
+> Audio de banda ancha. (s. f.). NFON AG. Recuperado de https://www.nfon.com/es/get-started/cloud-telephony/lexicon/base-de-conocimiento-destacar/audio-de-banda-ancha#:%7E:text=Desde%20hace%20m%C3%A1s%20de%20100,ancho%20de%20banda%20tan%20limitado.
+
+>Granada, C. P. D. D. A. de. (2014, 20 mayo). InformaciÃ3n General: AnÃ¡lisis espectral: Â¿Que es y que se representa en las grÃ¡ficas? Recuperado  de https://www.granada.org/inet/sonidos.nsf/d483b298c3f6a1b9c1257cdd00384c53/3fdfc36a7489b607c1257cde0024bb34!OpenDocument#:%7E:text=Se%20define%20el%20espectro%20de,es%20de%20naturaleza%20predominantemente%20espectral. 
+
+> Musiki. Espectro. Gustavo Basso (2001) Recuperado de https://musiki.org.ar/Espectro
+
+> Valdes, A. (2022, 18 febrero). ¿Cuál es el Rango de Frecuencia de la Voz? Productora Audiovisual en Colombia. Recuperado de https://almagina.com/cual-es-el-rango-de-frecuencia-de-la-voz/
+
+
+>  TIPOS DE ONDAS. (s. f.). ITCA. Recuperado de https://virtual.itca.edu.sv/Mediadores/irmfi1/IRMFI_32.htm#:%7E:text=Una%20onda%20senoidal%20o%20senoide,intervalos%20regulares%20(son%20peri%C3%B3dicas).
