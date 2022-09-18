@@ -6,7 +6,9 @@
 #https://www.thepythoncode.com/article/play-and-record-audio-sound-in-python  #Grabar y guardar
 
 #Parte 1
+#from curses import flash
 from multiprocessing import Process
+from turtle import onclick
 from matplotlib.widgets import Button
 from os import remove
 import multiprocessing
@@ -78,6 +80,7 @@ def grabar2(q1,q2,q3,q4):
     #Esta parte fue modificada por Jocxan Sandi 
     #Se utilizan las colas como banderas para comunicar los 3 diferentes procesos
     estado = "Pausar"
+    flag = False
     while True:
         if q2.empty()==False: #Esta es la cola de estado, en caso de que detecte una entrada es que
             #el estado cambió a terminar y terminan todos los procesos
@@ -87,12 +90,13 @@ def grabar2(q1,q2,q3,q4):
             estado=q4.get()
             
         if estado== "Grabar": #Cuando el estado de grabación se grabar entra
- 
+            
             frames.append(stream.read(chunk)) #lee lo s datos de entrada del micrófono 
             #los guarda en los frames
             
             if q3.empty()==False: #Cuando el proceso 2 envía la señal entonces se envían los datos
                 #de frames al proceso 3 para graficar estos
+                flag = True
                 sonido= np.frombuffer(b"".join(frames), dtype=np.int16) #une los frames y los convierte a un array de numpy de 16 bits
                 if q1.empty()==False:
                     q1.get()
@@ -104,30 +108,31 @@ def grabar2(q1,q2,q3,q4):
     if q1.empty()==False:
         time.sleep(2)
     
+    if flag:
     #Guarda los frames del dominio del tiempo en un archivo
-    f = open ('dominio_tiempo.txt','wb')
-    f.write(b"".join(frames))
-    f.close()
+        f = open ('dominio_tiempo.txt','wb')
+        f.write(b"".join(frames))
+        f.close()
 
-    #Este fragmento de código fue obtenido de Thepythoncode
-    # stop and close stream
-    stream.stop_stream()
-    stream.close()
-    # terminate pyaudio object
-    p.terminate()
-    # save audio file
-    # open the file in 'write bytes' mode
-    wf = wave.open(filename, "wb")
-    # set the channels
-    wf.setnchannels(channels)
-    # set the sample format
-    wf.setsampwidth(p.get_sample_size(FORMAT))
-    # set the sample rate
-    wf.setframerate(sample_rate)
-    # write the frames as bytes
-    wf.writeframes(b"".join(frames))
-    # close the file
-    wf.close()
+        #Este fragmento de código fue obtenido de Thepythoncode
+        # stop and close stream
+        stream.stop_stream()
+        stream.close()
+        # terminate pyaudio object
+        p.terminate()
+        # save audio file
+        # open the file in 'write bytes' mode
+        wf = wave.open(filename, "wb")
+        # set the channels
+        wf.setnchannels(channels)
+        # set the sample format
+        wf.setsampwidth(p.get_sample_size(FORMAT))
+        # set the sample rate
+        wf.setframerate(sample_rate)
+        # write the frames as bytes
+        wf.writeframes(b"".join(frames))
+        # close the file
+        wf.close()
 
     #Espera la confirmación para terminar el proceso
     #Esto porque necesitan terminar en el orden que iniciaron
@@ -212,7 +217,10 @@ def grafica_tiempo_real(q1,q2,q3,q4):
     axButn3 = plt.axes([0.5, 0.9, 0.1, 0.1])
     btn3 = Button(axButn3, label="Grabar", color='pink', hovercolor='tomato')
     btn3.on_clicked(lambda event: plot3(event,q4))
+    flag = False
 
+
+    
 
     while True:
         if q2.empty()==False: #Esta es la cola de estado, en caso de que detecte una entrada es que
@@ -246,15 +254,17 @@ def grafica_tiempo_real(q1,q2,q3,q4):
 
             del sonido, AudioFreq
             gc.collect()
+            flag = True
             
         fig.canvas.draw()
         fig.canvas.flush_events()
     
-    #Guarda los datos del espectro de frecuencia 
-    frecuencias = MagFreq.tobytes()
-    f = open ('dominio_frecuencia.txt','wb')
-    f.write(frecuencias)
-    f.close()
+    if flag:
+        #Guarda los datos del espectro de frecuencia 
+        frecuencias = MagFreq.tobytes()
+        f = open ('dominio_frecuencia.txt','wb')
+        f.write(frecuencias)
+        f.close()
 
 
     #Librera las colas para terminar los procesos
