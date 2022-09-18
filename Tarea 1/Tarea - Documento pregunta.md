@@ -47,13 +47,23 @@ Fourier generado por Jocxan
 
 Fourier generado por Mariana
 
-<center><h2>  Agregar Imagen </h2></center>
+![Imagen1](imagenes_documentacion/Mariana.png)
 
-Se puede observar que las graficas de fourier son diferentes aunque se diga lo mismo ya que el espacio entre las amplitudes de seno y coseno, el rango y la frecuencia (el espectro de voz) generado tambien son distintos.
+Notemos que en ambas imagenes el primer dibujo hace referencia al dominio del Tiempo y en la segunda grafica se observa la amplitud de Fourier.
 
+Es importante destacar que con lo investigado más las explicación que presenta el libro, lo que diferencia principalmente la voz de una persona con otra es el timbre que es el espectro específico de una voz, que consiste en el sonido básico y los formantes vocales, es decir la característica vocal que cada individuo posee, y esta se produce por como el tracto vocal se comporta a la hora de generar una vocal o una consonates. Por lo que esta es lo que se va a representar en las ondas armonicas continuas que se graficaron.
+
+Otra cosa que cambia la voz de una persona es el rango, la frecuencia y la potencia que genere.
+
+Si bien es cierto que se muestra un comportamiento similar entre las dos graficas. Se puede observar que las graficas tanto del dominio como la de fourier son diferentes aunque se diga lo mismo ya que el espacio entre las amplitudes de seno y coseno; el rango y la frecuencia (el espectro de voz) generado tambien son distintos.
 
 ## G) Referencias 
+> Análisis de Fourier. (s. f.). Recuperado de http://www.sc.ehu.es/sbweb/fisica/ondas/fourier/Fourier.html
+
+
 > Audio de banda ancha. (s. f.). NFON AG. Recuperado de https://www.nfon.com/es/get-started/cloud-telephony/lexicon/base-de-conocimiento-destacar/audio-de-banda-ancha#:%7E:text=Desde%20hace%20m%C3%A1s%20de%20100,ancho%20de%20banda%20tan%20limitado.
+
+>Luis Carrillo. (2006) ResearchGate. Recuperado de https://www.researchgate.net/figure/Figura-6-Grafica-de-los-pixeles-del-contorno-en-el-dominio-del-tiempo-y-la-frecuencia-Al_fig1_301956946
 
 >Granada, C. P. D. D. A. de. (2014, 20 mayo). InformaciÃ3n General: AnÃ¡lisis espectral: Â¿Que es y que se representa en las grÃ¡ficas? Recuperado  de https://www.granada.org/inet/sonidos.nsf/d483b298c3f6a1b9c1257cdd00384c53/3fdfc36a7489b607c1257cde0024bb34!OpenDocument#:%7E:text=Se%20define%20el%20espectro%20de,es%20de%20naturaleza%20predominantemente%20espectral. 
 
@@ -62,4 +72,6 @@ Se puede observar que las graficas de fourier son diferentes aunque se diga lo m
 > Valdes, A. (2022, 18 febrero). ¿Cuál es el Rango de Frecuencia de la Voz? Productora Audiovisual en Colombia. Recuperado de https://almagina.com/cual-es-el-rango-de-frecuencia-de-la-voz/
 
 
->  TIPOS DE ONDAS. (s. f.). ITCA. Recuperado de https://virtual.itca.edu.sv/Mediadores/irmfi1/IRMFI_32.htm#:%7E:text=Una%20onda%20senoidal%20o%20senoide,intervalos%20regulares%20(son%20peri%C3%B3dicas).
+> TIPOS DE ONDAS. (s. f.). ITCA. Recuperado de https://virtual.itca.edu.sv/Mediadores/irmfi1/IRMFI_32.htm#:%7E:text=Una%20onda%20senoidal%20o%20senoide,intervalos%20regulares%20(son%20peri%C3%B3dicas).
+
+> Zapata, J. R. (2021). Representacion del Audio. Jose Ricardo Zapata. Recuperado de https://joserzapata.github.io/courses/mineria-audio/representacion_audio/
