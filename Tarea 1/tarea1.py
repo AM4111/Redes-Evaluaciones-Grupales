@@ -8,9 +8,12 @@
 #Parte 1
 #from curses import flash
 from multiprocessing import Process
+from shutil import rmtree
+from playsound import playsound
 from turtle import onclick
 from matplotlib.widgets import Button
 from os import remove
+import shutil
 import multiprocessing
 import time
 import wave
@@ -153,7 +156,9 @@ def timer(q2,q3):
             break
         else:
             time.sleep(3)
-            q3.put("Verificado") #Pone la confirmación en la cola para el proceso 1
+            if q3.empty():
+                q3.put("Verificado")
+             #Pone la confirmación en la cola para el proceso 1
     
     #Espera la confirmación para terminar el proceso
     #Esto porque necesitan terminar en el orden que iniciaron
@@ -220,7 +225,7 @@ def grafica_tiempo_real(q1,q2,q3,q4):
     flag = False
 
 
-    
+    fig.canvas.mpl_connect('close_event', lambda event: plot1(event,q2))
 
     while True:
         if q2.empty()==False: #Esta es la cola de estado, en caso de que detecte una entrada es que
@@ -392,31 +397,43 @@ def get_nombre_audio():
 #### PARTE 3 DEL PROGRAMA - MUESTRA DE LOS ARCHIVOS ATM  #############
 
 ######################################################################
+
+
 def muestras_atm():
+    
     try:
+        ruta= pathlib.Path(__file__).parent.absolute()
+
         archivo = get_nombre_atm(1)
         archivo = archivo
         descomprimir(archivo)
 
-        f = open('dominio_tiempo.txt', 'rb')
+        f = open(str(ruta)+"//archivos_atm//dominio_tiempo.txt", 'rb')
         frames = f.read()
         f.close()
         sonido= np.frombuffer(frames, dtype=np.int16)
 
 
-        f = open('dominio_frecuencia.txt', 'rb')
+        f = open(str(ruta)+"//archivos_atm//dominio_frecuencia.txt", 'rb')
         frames = f.read()
         f.close()
         
         MagFreq= np.frombuffer(frames, dtype=np.float64)
 
-        print("bandera1")
+
         graficas_parte_2(1,[sonido,MagFreq])
-        print("bandera2")
-        remove("dominio_frecuencia.txt")
-        remove("dominio_tiempo.txt")
+
+        try:
+            rmtree("archivos_atm")
+            remove("recorded.wav")
+        except:
+            None
+        
+
+
+        
     except:
-        print("Problemas con abrir archivos")
+        print("El archivo atm está vacío o no se encuentran los archivos")
 
 #get_nombre_atm
 #método para obtener el nombre del archivo atm  solicitando al usuario
@@ -445,7 +462,6 @@ def get_nombre_atm(tipo):
 
             for i in archivos:
                 if i==audio+".atm":
-                    print("entra")
                     valido= False
 
             if (audio.find('.atm'))!=-1:
@@ -501,7 +517,7 @@ def descomprimir(nombre):
     try:
         ruta= pathlib.Path(__file__).parent.absolute()
         autrum = zipfile.ZipFile(str(ruta)+"//"+nombre)
-        autrum.extractall(ruta)
+        autrum.extractall(str(ruta)+"//archivos_atm")
         
         autrum.close()
     except:
@@ -541,6 +557,9 @@ def graficas_parte_2(tipo,datos):
     else: #Si es un gráfica desde un archivo.atm
         # SALIDA gráfica del dominio en el tiempo
         
+        axButn1 = plt.axes([0.1, 0.9, 0.1, 0.1])
+        btn1 = Button(axButn1, label="Reproducir", color='pink', hovercolor='tomato')
+        btn1.on_clicked(lambda event: reproducir_audio(event,))
         plt.subplot(211)
         plt.plot(sonido)
 
@@ -553,6 +572,24 @@ def graficas_parte_2(tipo,datos):
         plt.show()
         
         return True
+
+def reproducir_audio(event):
+    
+    ruta= pathlib.Path(__file__).parent.absolute()
+    archivos =os.listdir(str(ruta)+"//archivos_atm")
+    for i in archivos:
+        if (i.find('.wav'))!=-1:
+            audio = i
+    
+    source = r''+str(ruta)+"\\archivos_atm\\"+str(audio)
+    destination = r''+str(ruta)+"\\"+str(audio)
+
+    shutil.copyfile(source,destination)
+    
+
+    time.sleep(5)
+    playsound(str(audio))
+    
 
 
 #####################################################
