@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+  LanV1:
+    networks:
+      LANVirtual1:
+          router1 : 10.0.0.2
+  LanV2:
+    networks:
+      LANVirtual2:
+          router2 : 10.0.1.1
+
+networks:
+    # config LanV1
+    LANVirtual1:
+      driver: bridge
+
+      ipam:[
+        driver= default
+        config:[
+          #router 1
+          subnet= 10.0.0.1/24
+          gateway= 172.16.238.1
+        ]
+      ]
+    # config LanV2
+    LANVirtual2:
+      driver: bridge
+
+      ipam:[
+        driver= default
+        config:[
+        #router 2
+          subnet: 10.0.1.0/24
+          gateway: 10.0.0.1
+        ]
+      ]
+
+
+
+
