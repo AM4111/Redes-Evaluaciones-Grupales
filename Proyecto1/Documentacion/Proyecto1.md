@@ -61,7 +61,7 @@ networks:
         - gateway: 10.0.1.99
  </code></pre>
 
-Y para ejecutarlo se debe 
+Y para ejecutarlo se debe aunque va a mencionar que le tiene servicios seleccionados
 
 <pre><code>
 docker compose up
@@ -75,7 +75,7 @@ Se deben de crear dos routers con las siguientes especificaciones:
    -  Router2 para LAN Virtual 2 
    -  Router2 para LAN Virtual 2 
 
-Por lo cual la imagen a utilizar sera kmanna/nat-router:
+Por lo cual la imagen a utilizar como base sera kmanna/nat-router:
 
 https://hub.docker.com/r/kmanna/nat-router#:~:text=Docker%20nat%2Drouter,using%20pipework%20to%20create%20eth1.
 
@@ -92,12 +92,42 @@ El tráfico de salida permitido será únicamente mediante UDP y los puertos TCP
 - TCP/8443 se debe enrutar al VPN.
 - TCP/53 y UDP/53 deben ser enrutados al DNS.
 
-
-
+Doc del DockerFile
 <pre><code>
-iptables -A INPUT  -p tcp -m multiport --dports 53,80,443,3128,8443 -j ACCEPT
-iptables -A INPUT  -p upd --dports 53 -j ACCEPT
+# use the ubuntu base image
+#FROM ubuntu:latest
+FROM kmanna/nat-router
+
+# Router 1
+WORKDIR /router1
+
+COPY ./script.sh ./
 </code></pre>
+
+Doc  script.sh
+<pre><code>
+#TCP
+#iptables -A INPUT  -p tcp -m multiport --dports 53,80,443,3128,8443 -j ACCEPT
+
+sudo iptables-legacy -A INPUT -p tcp --sport 53 -j ACCEPT
+sudo iptables-legacy -A INPUT -p tcp --sport 80 -j ACCEPT
+sudo iptables-legacy -A INPUT -p tcp --sport 443 -j ACCEPT
+sudo iptables-legacy -A INPUT -p tcp --sport 3128 -j ACCEPT
+sudo iptables-legacy -A INPUT -p tcp --sport 8443 -j ACCEPT
+
+#UDP
+#iptables -A INPUT  -p upd --dports 53 -j ACCEPT
+
+sudo iptables-legacy -A INPUT -p upd --sport 53 -j ACCEPT
+
+
+</code></pre>
+
+Creamos la imagen del router
+<pre><code>
+ docker image build -t router:1.0 .
+</code></pre>
+
 
 https://unrouted.io/2017/08/15/docker-firewall/
 
@@ -111,12 +141,40 @@ Permitirá acceso del VPN hacia cualquier host en LAN Virtual 1 e Internet.
 Permitirá acceso desde cualquier host en LAN Virtual 2 a cualquier host en la LAN Virtual 1 en los puertos TCP/80, TCP/443 y el protocolo ICMP. 
 
 
+
+
+Doc del DockerFile
+<pre><code>
+# use the ubuntu base image
+#FROM ubuntu:latest
+FROM kmanna/nat-router
+
+# Router 1
+WORKDIR /router2
+
+COPY ./script.sh ./
+</code></pre>
+
+Doc  script.sh
+<pre><code>
+#TCP
+#iptables -A INPUT  -p tcp -m multiport --dports 80,443 -j ACCEPT
+
+sudo iptables-legacy -A INPUT -p tcp --sport 80 -j ACCEPT
+sudo iptables-legacy -A INPUT -p tcp --sport 443 -j ACCEPT
+
+#UDP
+#iptables -A INPUT  -p upd --dports 53 -j ACCEPT
+
+sudo iptables-legacy -A INPUT -p upd --sport 53 -j ACCEPT
+
+</code></pre>
+
 <u> Archivo docker-compose.yaml</u>
 
 ports:
   - "53/udp"
   - "80:443/tcp"
-
 
 Para la creación de los routes que se comportan com
 
@@ -126,7 +184,7 @@ Para la creación de los routes que se comportan com
 
 <u> Web Server 1 y Web Server 2 </u> 
 
-Deberán implementar un Web Server en Apache, el mismo expone una simple página.
+Deberán implementar un Web Server en Apache, el mismo expone una simple página
 
 **Consutruccion de las imagenes de los servidores**
 Se contrulle la imagen del server 1 
@@ -137,15 +195,12 @@ Pero para poder realizarlo se tiene que tener el dockerfile y el formato del la 
 Dockerfile: 
 
 <pre><code>
-# use the nginx base image
-FROM nginx:latest
+# use the httpd base image
+FROM httpd:2.4
 
-# Download a static HTML page and install that as the index.html into our image at the nginx root directory of the server
+# Reemplazar index
+COPY ./index.html/ /usr/local/apache2/htdocs/
 
-ADD index.html /usr/share/nginx/html/index.html
-
-# expose Port 80 for nginx to serve our web page
-EXPOSE 80
 </code></pre>
 
 Se decide subir la imagen para no perderla y poder utilizarla en un futuro
@@ -159,7 +214,22 @@ Se vuelve a realizar lo mismo para el server 2
 - docker tag helloworld2:1.0 mari1018/helloworld2:1.0
 - docker push mari1018/helloworld2:1.0
 
+| Nombre |Docker compose | Image |
+| -- | -- | -- | -- |
+| LAN Virtual 1 |<img src="/image/web1.jpg" alt="Web 1">|<img src="/image/vweb1.jpeg" alt="Visualizacion web 1"> |
+| LAN Virtual 2 | <img src="/image/web020.png" alt="Web 2">|<img src="/image/vweb2.jpeg" alt="Visualizacion web 2"> |
+
+
 <u> Proxy Reverso </u> 
+
+
+<pre><code>
+
+location /web1 {
+    proxy_pass Server1
+}
+
+</code></pre>
 
 <u> VPN </u> 
 
@@ -172,7 +242,6 @@ ______________________
 ______________________
 
 <h2> Pruebas realizadas, con pasos para reproducirlas. </h2>
-
 ______________________
 
 
@@ -184,6 +253,9 @@ ______________________
 
 <h2> Recomendaciones </h2>
 
+- Ir a consulta con el profesor
+- Si se tiene una duda mejor preguntar
+- 
 
 ______________________
 
