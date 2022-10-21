@@ -1,0 +1,74 @@
+version: "3.9"
+services:
+  Router1:
+    image: kmanna/nat-router
+    networks:
+      - macvlan1
+      - brigde1
+
+  Router2:
+    image: kmanna/nat-router
+    networks:
+      - macvlan2
+      - macvlan1
+  VPN:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "3000:3000 afitrion/contenedor"
+    links:
+      - nombre-del-contenedor-linkeado-a-este
+    networks: 
+      macvlan2:
+        ipv4_address: 10.0.1.2
+  DNS:
+    image: imageName
+    networks: 
+      macvlan1:
+        ipv4_address: 10.0.0.3
+  DHCP1:
+    image: imageName
+    networks: 
+      macvlan1:
+        ipv4_address: 10.0.0.4
+  DHCP2:
+    image: imageName
+    environment:
+      - name=value
+    networks: 
+      macvlan2:
+        ipv4_address: 10.0.1.5
+
+
+networks:
+  macvlan1:
+    driver: macvlan
+    #driver_opts:
+      #parent: eth0
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/24
+        - gateway: 10.0.0.10  #Router1
+  
+  macvlan2:
+    driver: macvlan
+    #driver_opts:
+      #parent: eth0
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.1.0/24
+        - gateway: 10.0.1.10  #Router2
+
+  brigde1:
+    driver: brigde
+    #driver_opts:
+      #parent: eth0
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24
+        - gateway: 192.168.1.1
+    

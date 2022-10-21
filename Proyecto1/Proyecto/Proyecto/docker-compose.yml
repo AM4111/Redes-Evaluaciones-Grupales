@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  DNS:
+    build: .
+
+    networks:
+      macvlan1:
+        ipv4_address: 10.0.0.3
+
+  DHCP1:
+    image: networkboot/dhcpd
+
+    networks:
+      macvlan1:
+        ipv4_address: 10.0.0.4
+
+
+volumes:
+  config: {}
+
+networks:
+  macvlan1:
+    driver: macvlan
+    #driver_opts:
+    #  parent: eth0
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+  
+  macvlan2:
+    driver: macvlan
+    #driver_opts:
+    #  parent: eth0
+    ipam:
+      config:
+        - subnet: 10.0.1.0/24
+          
+
+  brigde1:
+    driver: bridge
+    #driver_opts:
+      #parent: eth0
+    ipam:
+      driver: default
+    

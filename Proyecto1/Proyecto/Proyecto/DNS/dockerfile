@@ -1,0 +1,7 @@
+FROM ubuntu/bind9
+
+WORKDIR /Proyecto/DNS/bind
+
+COPY . /Proyecto/DNS/bind/
+
+RUN docker run -d --name bind9-container -e TZ=UTC -p 30053:53 ubuntu/bind9:9.18-22.04_beta

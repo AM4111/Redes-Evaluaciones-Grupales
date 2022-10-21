@@ -1,0 +1,8 @@
+# syntax=docker/dockerfile:1
+FROM ttsubo/simple-router:latest
+
+
+WORKDIR /router1/
+COPY . /router1/
+
+CMD ["start", "./router1/simpleRouter.sh"]

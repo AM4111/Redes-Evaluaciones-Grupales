@@ -1,0 +1,27 @@
+Router1:
+    build: 
+      context: ./router1
+      dockerfile: dockerfile
+    privileged: true
+    #image: ttsubo/simple-router 
+    #command: ["start", "./ROUTER1//simpleRouter.sh"]
+    #entrypoint: "./ROUTER1//simpleRouter.sh start"
+    networks:
+      macvlan1:
+        ipv4_address: 10.0.0.2
+      brigde1:
+        ipv4_address: 10.0.2.2
+
+  Router2:
+    build: 
+      context: ./router2
+      dockerfile: dockerfile
+    privileged: true
+    #image: ttsubo/simple-router
+    #command: ["start", "./ROUTER1//simpleRouter.sh"]
+    #entrypoint: "./ROUTER2//simpleRouter.sh start"
+    networks:
+        macvlan2:
+          ipv4_address: 10.0.1.3
+        macvlan1:
+          ipv4_address: 10.0.0.3
