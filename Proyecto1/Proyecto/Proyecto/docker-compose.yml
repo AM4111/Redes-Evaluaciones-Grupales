@@ -1,17 +1,23 @@
 version: "3.9"
 services:
+  DNS:
+    build: .
+
+    networks:
+      macvlan1:
+        ipv4_address: 10.0.0.3
+
   DHCP1:
-    image: imageName
-    networks: 
+    image: networkboot/dhcpd
+
+    networks:
       macvlan1:
         ipv4_address: 10.0.0.4
-  DHCP2:
-    image: imageName
-    environment:
-      - name=value
-    networks: 
-      macvlan2:
-        ipv4_address: 10.0.1.5
+
+
+volumes:
+  config: {}
+
 networks:
   macvlan1:
     driver: macvlan
@@ -20,7 +26,6 @@ networks:
     ipam:
       config:
         - subnet: 10.0.0.0/24
-          gateway: 10.0.0.11  #Router1
   
   macvlan2:
     driver: macvlan
@@ -29,7 +34,7 @@ networks:
     ipam:
       config:
         - subnet: 10.0.1.0/24
-          gateway: 10.0.1.11  #Router2
+          
 
   brigde1:
     driver: bridge
@@ -37,7 +42,4 @@ networks:
       #parent: eth0
     ipam:
       driver: default
-      config:
-        - subnet: 10.0.2.0/24
-          gateway: 10.0.2.15
     
