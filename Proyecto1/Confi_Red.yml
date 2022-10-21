@@ -1,40 +1,68 @@
 version: '3.3'
 
 services:
-  LanV1:
+  Router1:
     networks:
       LANVirtual1:
-          router1 : 10.0.0.2
-  LanV2:
-    networks:
+        ipv4_address: 10.0.0.99  #Ip del router en lan 1, coneccion con todo lo de LAN1
       LANVirtual2:
-          router2 : 10.0.1.1
+        ipv4_address: 10.0.0.2 # coneccion con LAN 2
+      bridge:
+  Router2:
+    networks:
+      LANVirtual1:
+        ipv4_address: 10.0.0.2 # coneccion con LAN 1
+      LANVirtual2:
+        ipv4_address: 10.0.10.2 #coneccion con todo lo de LAN2
+
+  DHCP1:
+    build: . #configurar
+
+    networks:
+      LANVirtual1:
+        ipv4_address:10.0.0.4
+    volumes:
+      - ./dhcpd:/data/dhcpd
+    ports:
+      - "100-150"
+
+  DHCP2:
+    networks:
+      LANVirtual1:
+        ipv4_address:10.0.1.5
+    volumes:
+      - ./dhcpd:/data/dhcpd
+    ports:
+      - "200-250"
+      
 
 networks:
     # config LanV1
     LANVirtual1:
       driver: bridge
-
-      ipam:[
-        driver= default
-        config:[
-          #router 1
-          subnet= 10.0.0.1/24
-          gateway= 172.16.238.1
-        ]
-      ]
+      #driver: macvlan
+      ipam:
+        driver: default,
+        config:
+          - subnet: 10.0.0.0/24,
+         # - gateway: 172.16.238.1
+        
     # config LanV2
     LANVirtual2:
       driver: bridge
+      #driver: macvlan
+      ipam:
+        driver: default
+        config:
+          - subnet: 10.0.1.0/24
+          - gateway: 10.0.10.2
+    bridge:
+        ipam:
+            driver: default # DEFAULT -> bridge
 
-      ipam:[
-        driver= default
-        config:[
-        #router 2
-          subnet: 10.0.1.0/24
-          gateway: 10.0.0.1
-        ]
-      ]
+
+
+
 
 
 

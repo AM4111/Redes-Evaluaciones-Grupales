@@ -1,0 +1,55 @@
+version: '2'
+
+services:
+    Router1:
+      image: kmanna/nat-router
+      container_name: router1
+      networks:
+        #Ip del router en con LAN1
+        LANVirtual1:
+          #router1 : 10.0.0.99
+          ipv4_address: 10.0.0.99     
+        
+        #coneccion con LAN2
+        LANVirtual2:
+          #router2 : 10.0.1.99
+          ipv4_address: 10.0.1.99
+
+    Router2:
+      image: kmanna/nat-router
+      container_name: router1
+      networks:
+        #Ip del router en con LAN1
+        LANVirtual1:
+          #router1 : 10.0.0.99
+          ipv4_address: 10.0.0.99     
+        
+        #coneccion con LAN2
+        LANVirtual2:
+          #router2 : 10.0.1.99
+          ipv4_address: 10.0.1.99
+
+networks:
+  # config LanV1
+  LANVirtual1:
+    #driver: bridge
+    driver: macvlan
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/24
+        #no permite que sea 10.0.0.1
+        - gateway: 10.0.0.99
+
+  # config LanV2
+  LANVirtual2:
+    #driver: bridge
+    driver: macvlan
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.1.0/24
+        #no permite que sea 10.0.1.1
+        - gateway: 10.0.1.99
+
+        

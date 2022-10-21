@@ -1,0 +1,101 @@
+version: '2'
+
+services:
+    cliente:
+        image: strm/nginx-balancer
+        container_name: load-balancer
+        environment:
+            - "NODES=web1:80 web2:80"
+    web1:
+        image: helloworld2:1.0
+        networks:
+          LANVirtual1:
+            #router1 : 10.0.0.99
+            ipv4_address: 10.0.0.99
+    web2:
+        image: helloworld1:1.0
+        networks:
+          LANVirtual2:
+            #router2 : 10.0.1.99
+            ipv4_address: 10.0.1.99
+
+networks:
+  # config LanV1
+  LANVirtual1:
+    #driver: bridge
+    driver: macvlan
+      ipam:
+        driver: default
+        config:
+          - subnet: 10.0.0.0/24
+          #no permite que sea 10.0.0.1
+          - gateway: 10.0.0.99
+
+  # config LanV2
+  LANVirtual2:
+    #driver: bridge
+    driver: macvlan
+      ipam:
+        driver: default
+        config:
+          - subnet: 10.0.1.0/24
+          #no permite que sea 10.0.1.1
+          - gateway: 10.0.1.99
+
+
+      
+
+      
+services:
+  Router1:
+    networks:
+      LANVirtual1:
+          router1 : 10.0.0.2
+  Router2:
+    networks:
+      LANVirtual2:
+          router2 : 10.0.1.1
+  cli1:
+    build: ../redes02/
+    container_name: cliente
+    privileged: true                            # se ejecuta todo como root
+    networks:
+         bridge:
+    tty: true  
+
+
+    -----------------------------------------
+version: '2'
+services:
+    front:
+        image: strm/nginx-balancer
+        container_name: load-balancer
+        ports:
+            - "80:8080"
+        environment:
+            - "NODES=web1:80 web2:80"
+    web1:
+        image: helloworld2:1.0
+        networks:
+          LANVirtual1:
+    web2:
+        image: helloworld1:1.0
+        networks:
+          LANVirtual2:
+
+networks:
+    # config LanV1
+    LANVirtual1:
+      #driver: bridge
+      driver: macvlan
+      IPAMConfig: null
+      Gateway: 10.0.0.1
+      IPAddress: 10.0.1.0/24
+
+    # config LanV2
+    LANVirtual2:
+      #driver: bridge
+      driver: macvlan
+      IPAMConfig: null
+      Gateway: 10.0.0.1
+      IPAddress: 10.0.1.0/24
