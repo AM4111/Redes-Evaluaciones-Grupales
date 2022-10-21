@@ -1,0 +1,51 @@
+version: "3.9"
+services:
+  Router1:
+    privileged: true
+    image: ttsubo/simple-router 
+    entrypoint: "C:\\Users\\Usuario\\OneDrive\\Escritorio\\Semestre 10\\Carpeta-Compartida\\ROUTER1\\simpleRouter.sh start"
+    networks:
+      macvlan1:
+        ipv4_address: 10.0.0.2
+      brigde1:
+        ipv4_address: 10.0.2.2
+
+  Router2:
+    privileged: true
+    image: ttsubo/simple-router
+    entrypoint: "C:\\Users\\Usuario\\OneDrive\\Escritorio\\Semestre 10\\Carpeta-Compartida\\ROUTER1\\simpleRouter.sh start"
+    networks:
+        macvlan2:
+          ipv4_address: 10.0.1.3
+        macvlan1:
+          ipv4_address: 10.0.0.3
+
+networks:
+  macvlan1:
+    driver: macvlan
+    #driver_opts:
+    #  parent: eth0
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+          gateway: 10.0.0.11  #Router1
+  
+  macvlan2:
+    driver: macvlan
+    #driver_opts:
+    #  parent: eth0
+    ipam:
+      config:
+        - subnet: 10.0.1.0/24
+          gateway: 10.0.1.11  #Router2
+
+  brigde1:
+    driver: bridge
+    #driver_opts:
+      #parent: eth0
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24
+          gateway: 10.0.2.15
+    

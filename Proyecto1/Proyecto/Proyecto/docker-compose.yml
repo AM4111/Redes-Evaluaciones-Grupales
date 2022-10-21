@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  DHCP1:
+    image: imageName
+    networks: 
+      macvlan1:
+        ipv4_address: 10.0.0.4
+  DHCP2:
+    image: imageName
+    environment:
+      - name=value
+    networks: 
+      macvlan2:
+        ipv4_address: 10.0.1.5
+networks:
+  macvlan1:
+    driver: macvlan
+    #driver_opts:
+    #  parent: eth0
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+          gateway: 10.0.0.11  #Router1
+  
+  macvlan2:
+    driver: macvlan
+    #driver_opts:
+    #  parent: eth0
+    ipam:
+      config:
+        - subnet: 10.0.1.0/24
+          gateway: 10.0.1.11  #Router2
+
+  brigde1:
+    driver: bridge
+    #driver_opts:
+      #parent: eth0
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24
+          gateway: 10.0.2.15
+    
