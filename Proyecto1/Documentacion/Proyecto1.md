@@ -180,6 +180,91 @@ Para la creación de los routes que se comportan com
 
 <u> DNS </u> 
 
+Se utiliza la imagen Ubuntu/Bind9 para realizar el DNS.
+
+**Dockerfile**
+
+<pre><code>
+FROM ubuntu/bind9
+
+WORKDIR /Proyecto/DNS/bind
+
+COPY . /Proyecto/DNS/bind/
+
+RUN docker run -d --name bind9-container -e TZ=UTC -p 30053:53 ubuntu/bind9:9.18-22.04_beta
+</code></pre>
+
+**Configuraciones mínimas del DNS**
+
+<pre><code>
+</code></pre>
+
+En el archivo: ***named.conf.options***.
+<pre><code>
+listen-on { any; };
+allow-query { localhost; 10.0.0.0/24; 10.0.1.0/24; };
+forwarders {
+        8.8.8.8;
+        8.8.8.9;
+};
+dnssec-validation no;
+</code></pre>
+
+En el archivo: ***named.conf.local***, se configuran las zonas.
+<pre><code>
+zone "lan01.io" IN {
+        type master;
+        file "/etc/bind/forward.lan01.io
+";
+};
+
+zone "lan02.io" IN {
+        type master;
+        file "/etc/bind/forward.lan02.io
+";
+};
+
+zone "google.com" IN {
+        type master;
+        file "/etc/bind/forward.google.com
+";
+};
+</code></pre>
+
+Para cada una de las zonas declaradas en el archivo anterior, se debe crear un archivo para detallar su configuración.
+
+Por ejemplo en el archivo: ***forward.lan01.io***
+
+<pre><code>
+$TTL    1D
+@       IN      SOA     lan01.io. root.lan01.io. (
+        1               ; Serial
+        12h             ; Refresh
+        15m             ; Retry
+        3w              ; Expire
+        2h  )           ; Negative Cache TTL
+
+;       Registros NS
+
+        IN      NS      lan.01.io.
+dhcp1   IN      A       10.0.0.4
+</code></pre>
+
+<u> DHCP </u> 
+
+Para crear un DHCP utilizamos la imagen networkboot/dhcpd. Utiliza un archivo llamado ***dhcp.conf***, el cual se presenta adelante.
+<pre><code>
+subnet 10.0.0.0 netmask 255.255.255.0{
+    option routers              10.0.0.1;
+    option subnet-mask          255.255.255.0;
+    option domain-name-servers  10.0.0.1;
+    default-lease-time          43200;
+    max-lease-time              86400;
+    range                       10.0.0.100  10.0.0.150;
+}
+</code></pre>
+
+
 <u> Clientes </u> 
 
 <u> Web Server 1 y Web Server 2 </u> 
