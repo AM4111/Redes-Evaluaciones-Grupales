@@ -1,5 +1,60 @@
 version: "3.9"
 services:
+  router1:
+      privileged: true      
+      image: mari1018/router1:1.0
+      #image: routerale
+      container_name: router1
+      networks:
+        #Ip del router en con LAN1
+        macvlan1:
+          #router1 : 10.0.0.99
+          ipv4_address: 10.0.0.99
+
+        #coneccion con LAN2
+        macvlan2:
+          #router2 : 10.0.1.98
+          ipv4_address: 10.0.1.98
+      cap_add:
+        - NET_ADMIN
+  router2:
+      privileged: true      
+      image: mari1018/router1:1.0
+      #image: routerale
+      container_name: router2
+      networks:
+        #Ip del router en con LAN1
+        macvlan1:
+          #router1 : 10.0.0.99
+          ipv4_address: 10.0.0.98
+
+        #coneccion con LAN2
+        macvlan2:
+          #router2 : 10.0.1.99
+          ipv4_address: 10.0.1.99
+      cap_add:
+        - NET_ADMIN
+  cliente:
+        image: strm/nginx-balancer
+        container_name: cliente-load-balancer
+        ports:
+          - "80:8080"
+        environment:
+          - "NODES=web1:80 web2:80"
+
+  web1:
+      image: mari1018/helloworld1:1.1
+      # networks:
+      #   macvlan1:
+      #     #router1 : 10.0.0.99
+      #     ipv4_address: 10.0.0.21
+
+  web2:
+      image: mari1018/helloworld2:1.1
+      # networks:
+      #   macvlan2:
+      #     #router2 : 10.0.1.99
+      #     ipv4_address: 10.0.1.21
   dns:
     build:
       context: ./DNS/

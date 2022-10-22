@@ -1,0 +1,7 @@
+FROM networkboot/dhcpd
+
+WORKDIR /proyecto/DHCP2/
+
+COPY . /proyecto/DHCP2/
+
+CMD ["/dhcpd.conf"]
