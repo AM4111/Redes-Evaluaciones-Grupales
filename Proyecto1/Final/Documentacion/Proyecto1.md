@@ -384,3 +384,21 @@ ______________________
 - https://www.netntw.com/archivos/533
 - https://www.youtube.com/watch?v=b_mOOs53ut0&ab_channel=NETWORLD
 - https://www.youtube.com/watch?v=tIlNfB2Vk8s&t=358s&ab_channel=SnatchDreams
+
+- https://iesgn.github.io/curso_docker_2021/sesion4/definida.html
+
+- https://hub.docker.com/r/kmanna/nat-router#:~:text=Docker%20nat%2Drouter,using%20pipework%20to%20create%20eth1
+
+- https://github.com/jpetazzo/pipework
+
+- https://linux.die.net/man/8/iptables
+
+- https://unix.stackexchange.com/questions/150523/bash-iptables-command-not-found
+
+- https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+- https://docs.docker.com/config/containers/container-networking/
+
+- https://stackoverflow.com/questions/7499248/how-do-i-run-a-shell-script-as-root-sudo
+
+- https://stackoverflow.com/questions/34549859/run-a-script-in-dockerfile
