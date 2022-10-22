@@ -7,13 +7,13 @@ IC: 7602-Redes  - 2 Semestre 2022 <br>
 ______________________
 <center> <h1> Proyecto 1 </h1> </center> 
 
-Para este proyecto se realiza la implementacion dos pequeñas redes virtuales que exponen diferentes servicios, donde la toda la configuración esta implementada mediante Docker y Docker Compose (todo debe estar completamente automatizado)
+Para este proyecto se realiza la implementación dos pequeñas rede0s virtuales que exponen diferentes servicios, donde la toda la configuración esta implementada mediante Docker y Docker Compose (todo debe estar completamente automatizado)
 
-Para la elavoracion del proyecto se conto con un <u> Repositorio de github </u> el cual es:
+Para la elaboración del proyecto se conto con un <u> Repositorio de github </u> el cual es:
 
  - Poner el enlace al repositorio
 
-Para la elavoración del proyecto se decidio utilizar el sistema operativo Ubuntu.
+Para la elaboración del proyecto se decidió utilizar el sistema operativo Ubuntu.
 
 <u> Diagrama de arquitectura </u> 
 
@@ -25,14 +25,14 @@ ______________________
 
 <u> Redes </u> 
 
-En primera instancia se solicita la configuracion de las redes esperadas las cuales son las siguiente:
+En primera instancia se solicita la configuración de las redes esperadas las cuales son las siguiente:
 
 | Nombre | Número de red | Máscara |Comando|
 | -- | -- | -- | -- |
 | LAN Virtual 1 | 10.0.0.0| 255.255.255.0 | <pre><code>docker network create LANVirtual1 --subnet=10.0.0.0/24 </code></pre>|
 | LAN Virtual 2 | 10.0.1.0 |255.255.255.0 | <pre><code>docker network create LANVirtua2 --subnet=10.0.1.0/24 </code></pre>|
 
-Para realizar la automatizacion con docker, se realiza una modificacion al archivo docker-compose.yaml en el cual tendra lo siguiente:
+Para realizar la automatización con docker, se realiza una modificación al archivo docker-compose.yaml en el cual tendrá lo siguiente:
 
 <pre><code>
 version: '2'
@@ -94,14 +94,19 @@ El tráfico de salida permitido será únicamente mediante UDP y los puertos TCP
 
 Doc del DockerFile
 <pre><code>
-# use the ubuntu base image
-#FROM ubuntu:latest
-FROM kmanna/nat-router
-
 # Router 1
-WORKDIR /router1
+#WORKDIR /router1
+#COPY script.sh /
+#RUN chmod +x /script.sh
+#ENTRYPOINT ["/script.sh"]
 
-COPY ./script.sh ./
+#FROM kmanna/nat-router
+FROM ubuntu
+COPY ./script.sh /home/
+
+USER root
+#ENTRYPOINT
+ENTRYPOINT ["/bin/bash", "/home/script.sh"]
 </code></pre>
 
 Doc  script.sh
@@ -145,14 +150,19 @@ Permitirá acceso desde cualquier host en LAN Virtual 2 a cualquier host en la L
 
 Doc del DockerFile
 <pre><code>
-# use the ubuntu base image
-#FROM ubuntu:latest
-FROM kmanna/nat-router
+# Router 2
+#WORKDIR /router2
+#COPY script.sh /
+#RUN chmod +x /script.sh
+#ENTRYPOINT ["/script.sh"]
 
-# Router 1
-WORKDIR /router2
+#FROM kmanna/nat-router
+FROM ubuntu
+COPY ./script.sh /home/
 
-COPY ./script.sh ./
+USER root
+#ENTRYPOINT
+ENTRYPOINT ["/bin/bash", "/home/script.sh"]
 </code></pre>
 
 Doc  script.sh
@@ -196,8 +206,6 @@ RUN docker run -d --name bind9-container -e TZ=UTC -p 30053:53 ubuntu/bind9:9.18
 
 **Configuraciones mínimas del DNS**
 
-<pre><code>
-</code></pre>
 
 En el archivo: ***named.conf.options***.
 <pre><code>
@@ -271,8 +279,8 @@ subnet 10.0.0.0 netmask 255.255.255.0{
 
 Deberán implementar un Web Server en Apache, el mismo expone una simple página
 
-**Consutruccion de las imagenes de los servidores**
-Se contrulle la imagen del server 1 
+**Construcción de las imágenes de los servidores**
+Se construye la imagen del server 1 
 <pre><code>docker image build -t helloworld:1.0 .</code></pre>
 
 Pero para poder realizarlo se tiene que tener el dockerfile y el formato del la pagina a mostrar.
@@ -299,15 +307,8 @@ Se vuelve a realizar lo mismo para el server 2
 - docker tag helloworld2:1.0 mari1018/helloworld2:1.0
 - docker push mari1018/helloworld2:1.0
 
-| Nombre |Docker compose | Image |
-| -- | -- | -- | -- |
-| LAN Virtual 1 |<img src="/image/web1.jpg" alt="Web 1">|<img src="/image/vweb1.jpeg" alt="Visualizacion web 1"> |
-| LAN Virtual 2 | <img src="/image/web020.png" alt="Web 2">|<img src="/image/vweb2.jpeg" alt="Visualizacion web 2"> |
-
 
 <u> Proxy Reverso </u> 
-
-
 <pre><code>
 
 location /web1 {
@@ -316,37 +317,54 @@ location /web1 {
 
 </code></pre>
 
-<u> VPN </u> 
-
-<u> Web Cache </u> 
-______________________
-
-<u> Diagramas de arquitectura </u> 
-
-<u> Diagramas de flujo</u> 
-______________________
 
 <h2> Pruebas realizadas, con pasos para reproducirlas. </h2>
-______________________
-
-
-
-______________________
+Para poder visualizar las dos paginas web se creo un cliente en el cual esta expuesto en el puerto 80 por lo que se tiene son dos ambientes el web1 y web2 que son "hola mundos l1" y "hola mundo l2" que a la hora de la solicitud se va turnando en cual muestra. Para poder replicarlo se debe de correr el docker compose y abrir su navegador y buscar el localhost o bien el ip de su maquina con el puerto 80
 
 <h2> Resultados de las pruebas unitarias. </h2>
+
 ______________________
 
 <h2> Recomendaciones </h2>
 
-- Ir a consulta con el profesor
-- Si se tiene una duda mejor preguntar
-- 
+- Realizar una planificación de las tareas por realizar.
+- Aprovechar todo el tiempo dado.
+- Comprender el objetivo del proyecto
+- Ir a consulta con el profesor.
+- Si se tiene una duda mejor preguntar.
+- Investigar sobre docker y docker compose.
+- Hacer un cronograma del proyecto.
+- Investigar sobre las herramientas recomendadas por el profesor.
+- Iniciar con lo que se considere más sencillo de realizar.
+- Apoyo con compañeros y foros es de ayuda.
+
 
 ______________________
 
+<h2> Conclusiones </h2>
+
+- Manejar un código programado por terceras personas siempre representa un gran reto, o bien utilizar este como base se puede complicar mucho por lo cual es mejor ir dividiéndolo por secciones. Como a la hora de crear las imágenes.
+
+- Se invita a crear primeramente los servidores web para poder ir uniéndolo con las demás partes del proyecto, ya que se considera que fue una de las partes más simples de realizar.
+
+- Si bien en el desarrollo de la imagen del router con diversas configuraciones se realizaba con éxito hasta el punto de la creación del router, se nota que por un pequeño detalle que no se entendió ni se logró resolver el funcionamiento de estos, se vió perjudicado por esto.
+
+- También se nota la versión con la cual genera el docker compose.yml pueden solventar algunos errores de identación no encontrados. 
+
+- La conexión entre los diferentes componentes a generar, era más complicado de lo previsto.
+
+- La formas de configurar los diferentes componentes, era más complicado de lo previsto.
+
+- No todas las imágenes encontradas en docker hub fueron de ayuda, ya que no están lo suficientemente documentadas y se perdió mucho tiempo intentando realizarlo con éxito. 
+
+- Si bien realizar los componentes por consola fue más sencillo, la automatización en docker-compose no fue así debido al poco dominio que se tenía de docker. 
+
+- El proyecto permitió conocer sobre docker, creación de imágenes y como los componentes de red se relacionan. 
+
+- A pesar de que no se logró concluir el proyecto, este permitió ampliar los conocimientos teóricos y algunos prácticos del funcionamientos de las redes. 
+______________________
+
 <h2> Bibliografia </h2>
-
-
 
 - Configuración de red (Networking) en Dockers - Blog Virtualizacion https://www.maquinasvirtuales.eu/configuracion-red-networking-dockers/
 
@@ -361,3 +379,8 @@ ______________________
 - https://hub.docker.com/r/networkboot/dhcpd/#:~:text=For%20that%20you%20need%20to,for%20the%20specified%20network%20interface.
 
 - https://gist.github.com/mikejoh/04978da4d52447ead7bdd045e878587d
+
+- https://www.youtube.com/watch?v=tIlNfB2Vk8s&ab_channel=SnatchDreams
+- https://www.netntw.com/archivos/533
+- https://www.youtube.com/watch?v=b_mOOs53ut0&ab_channel=NETWORLD
+- https://www.youtube.com/watch?v=tIlNfB2Vk8s&t=358s&ab_channel=SnatchDreams

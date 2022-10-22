@@ -19,7 +19,7 @@ services:
         - NET_ADMIN
   router2:
       privileged: true      
-      image: mari1018/router1:1.0
+      image: mari1018/router2:1.0
       #image: routerale
       container_name: router2
       networks:
