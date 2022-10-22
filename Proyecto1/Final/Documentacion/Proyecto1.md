@@ -1,7 +1,7 @@
 Tecnológico de Costa Rica<br> 
 Escuela de Ingeniería en Computación<br> 
 IC: 7602-Redes  - 2 Semestre 2022 <br> 
-2018093728 - Paula Mariana Bustos Vargas
+2018093728 - Paula Mariana Bustos Vargas <br> 
 2018086509 - Jocxan Sandi Batista
  
 ______________________
