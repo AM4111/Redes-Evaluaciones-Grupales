@@ -109,16 +109,16 @@ Doc  script.sh
 #TCP
 #iptables -A INPUT  -p tcp -m multiport --dports 53,80,443,3128,8443 -j ACCEPT
 
-sudo iptables-legacy -A INPUT -p tcp --sport 53 -j ACCEPT
-sudo iptables-legacy -A INPUT -p tcp --sport 80 -j ACCEPT
-sudo iptables-legacy -A INPUT -p tcp --sport 443 -j ACCEPT
-sudo iptables-legacy -A INPUT -p tcp --sport 3128 -j ACCEPT
-sudo iptables-legacy -A INPUT -p tcp --sport 8443 -j ACCEPT
+iptables -A INPUT -p tcp --sport 53 -j ACCEPT
+iptables -A INPUT -p tcp --sport 80 -j ACCEPT
+iptables -A INPUT -p tcp --sport 443 -j ACCEPT
+iptables -A INPUT -p tcp --sport 3128 -j ACCEPT
+iptables -A INPUT -p tcp --sport 8443 -j ACCEPT
 
 #UDP
 #iptables -A INPUT  -p upd --dports 53 -j ACCEPT
 
-sudo iptables-legacy -A INPUT -p upd --sport 53 -j ACCEPT
+iptables-legacy -A INPUT -p udp --dport 53 -j ACCEPT
 
 
 </code></pre>
@@ -160,13 +160,13 @@ Doc  script.sh
 #TCP
 #iptables -A INPUT  -p tcp -m multiport --dports 80,443 -j ACCEPT
 
-sudo iptables-legacy -A INPUT -p tcp --sport 80 -j ACCEPT
-sudo iptables-legacy -A INPUT -p tcp --sport 443 -j ACCEPT
+iptables- -A INPUT -p tcp --sport 80 -j ACCEPT
+iptables -A INPUT -p tcp --sport 443 -j ACCEPT
 
 #UDP
 #iptables -A INPUT  -p upd --dports 53 -j ACCEPT
 
-sudo iptables-legacy -A INPUT -p upd --sport 53 -j ACCEPT
+iptables -A INPUT -p upd --dport 53 -j ACCEPT
 
 </code></pre>
 
@@ -358,3 +358,6 @@ ______________________
 
 - https://www.returngis.net/2019/02/publicar-tu-imagen-en-docker-hub/
 
+- https://hub.docker.com/r/networkboot/dhcpd/#:~:text=For%20that%20you%20need%20to,for%20the%20specified%20network%20interface.
+
+- https://gist.github.com/mikejoh/04978da4d52447ead7bdd045e878587d
