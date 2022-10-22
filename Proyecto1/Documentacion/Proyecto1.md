@@ -95,13 +95,14 @@ El tráfico de salida permitido será únicamente mediante UDP y los puertos TCP
 Doc del DockerFile
 <pre><code>
 # use the ubuntu base image
-#FROM ubuntu:latest
-FROM kmanna/nat-router
+FROM ubuntu
+#FROM kmanna/nat-router
 
-# Router 1
-WORKDIR /router1
+COPY ./script.sh /home/
 
-COPY ./script.sh ./
+USER root
+#ENTRYPOINT
+ENTRYPOINT ["/bin/bash", "/home/script.sh"]
 </code></pre>
 
 Doc  script.sh
@@ -118,7 +119,7 @@ iptables -A INPUT -p tcp --sport 8443 -j ACCEPT
 #UDP
 #iptables -A INPUT  -p upd --dports 53 -j ACCEPT
 
-iptables-legacy -A INPUT -p udp --dport 53 -j ACCEPT
+iptables -A INPUT -p udp --dport 53 -j ACCEPT
 
 
 </code></pre>
@@ -321,11 +322,6 @@ location /web1 {
 <u> Web Cache </u> 
 ______________________
 
-<u> Diagramas de arquitectura </u> 
-
-<u> Diagramas de flujo</u> 
-______________________
-
 <h2> Pruebas realizadas, con pasos para reproducirlas. </h2>
 ______________________
 
@@ -340,7 +336,9 @@ ______________________
 
 - Ir a consulta con el profesor
 - Si se tiene una duda mejor preguntar
-- 
+
+
+
 
 ______________________
 
