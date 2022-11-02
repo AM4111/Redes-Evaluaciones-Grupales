@@ -75,7 +75,7 @@ void Validar_mask(char* p_direct, char* maskcalc,int* mask_list, int* ip_correct
 		int mask = (int) strtol(cadena, NULL, 10);
 		calmask(mask,maskcalc);
 
-		printf("mascara %s -> %s \n", p_direct, maskcalc);
+		//printf("mascara %s -> %s \n", p_direct, maskcalc);
 
 		direct_List(maskcalc, mask_list, ip_correct);
 		//printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
@@ -86,7 +86,42 @@ void Validar_mask(char* p_direct, char* maskcalc,int* mask_list, int* ip_correct
 	}	
 }
 
-int main(int  argc, char* argv[])
+void result_str(char* result, int* list){
+	for (int i =0 ; i<4; i++){
+		char string[3]="";
+		sprintf(string, "%d", list[i]);
+		//itoa(num,string,10);
+		strcat(result,string);
+		if (i<=2){
+			strcat(result,".");
+		}
+	}	
+}
+
+void val_fin(int* broadcast_list,int* Final_range_res){
+
+	if(broadcast_list[3] == 0){
+		if(broadcast_list[2] != 0){
+			Final_range_res[2] == broadcast_list[2]-1;
+			Final_range_res[3] == 255;
+		}else{
+			if(broadcast_list[1] != 0){
+				Final_range_res[1] == broadcast_list[1]-1;
+				Final_range_res[2] == 255;
+				Final_range_res[3] == 255;
+			}else{
+				if(broadcast_list[0] != 0){
+					Final_range_res[0] == broadcast_list[0]-1;
+					Final_range_res[1] == 255;
+					Final_range_res[2] == 255;
+					Final_range_res[3] == 255;
+				}
+			}
+		}
+	}
+}
+
+void calc(char* argv[],char* result)
 {
 // variables
     char maskcalc[16]="",
@@ -104,58 +139,11 @@ int main(int  argc, char* argv[])
 	int broadcast_list[4] ;
 	int mask_list[4] ;
 	int ip_list[4];
-/*
-	//Res
-	char broadcast_res[];
-	char Num_Red_res[];
-	char Start_range_res[];
-	char Final_range_res[];
-	char Subnets_res[];
-*/
+	int Start_range_res[4];
+	int Final_range_res[4];
 
     unsigned char* mask_cal;
-/*
-	// obtener ip parametro para trabajar
-	direct_List(argv[1], ip_list);
-	printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
-	
-	// obtener mask parametro para trabajar
-	if (strrchr(argv[2] , '/')!= NULL){
-		char *cadena = strtok(argv[2],del_backslash);
-		int mask = (int) strtol(cadena, NULL, 10);
-		calmask(mask,maskcalc);
 
-		printf("mascara %s -> %s \n", argv[2] , maskcalc);
-
-		direct_List(maskcalc, mask_list);
-		printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
-		
-	}else {
-		
-		direct_List(argv[2], mask_list);
-		printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
-	}
-
-	// # Red
-	for (int i =0 ; i<4; i++){
-		//NUm red
-		num_red_list[i] = ip_list[i]&mask_list[i] ;
-	}
-	printf("num_red_list:%d.%d.%d.%d \n", num_red_list[0], num_red_list[1], num_red_list[2], num_red_list[3]);
-
-	
-	// saca complemento de la mascara
-	for (int i =0 ; i<4; i++){
-		comp_mask_list[i] = 255^mask_list[i] ;
-	}
-	printf("comp_mask_list:%d.%d.%d.%d \n", comp_mask_list[0], comp_mask_list[1], comp_mask_list[2], comp_mask_list[3]);
-
-    //broadcast
-	for (int i =0 ; i<4; i++){
-		broadcast_list[i] = num_red_list[i]|comp_mask_list[i] ;
-	}
-	printf("broadcast_list:%d.%d.%d.%d \n", broadcast_list[0], broadcast_list[1], broadcast_list[2], broadcast_list[3]);
-*/
 	if (strcmp(argv[1], "GET") == 0){
 		if (strcmp(argv[2], "BROADCAST") == 0){
 			if (strcmp(argv[3], "IP") == 0){
@@ -163,14 +151,14 @@ int main(int  argc, char* argv[])
 				if (IP_ip_correct == 1){
 					printf("ip invalido \n");
 				}else{
-					printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
+					//printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
 
 					if (strcmp(argv[5], "MASK") == 0){
 						Validar_mask(argv[6],maskcalc,mask_list,&MASK_ip_correct);
 						if (MASK_ip_correct == 1){
 							printf("mask invalido \n");
 						}else{
-							printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
+							//printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
 
 							for (int i =0 ; i<4; i++){
 								//NUm red
@@ -180,9 +168,12 @@ int main(int  argc, char* argv[])
 								//broadcast
 								broadcast_list[i] = num_red_list[i]|comp_mask_list[i] ;
 							}
-							printf("num_red_list:%d.%d.%d.%d \n", num_red_list[0], num_red_list[1], num_red_list[2], num_red_list[3]);
-							printf("comp_mask_list:%d.%d.%d.%d \n", comp_mask_list[0], comp_mask_list[1], comp_mask_list[2], comp_mask_list[3]);
-							printf("broadcast_list:%d.%d.%d.%d \n", broadcast_list[0], broadcast_list[1], broadcast_list[2], broadcast_list[3]);
+							//printf("num_red_list:%d.%d.%d.%d \n", num_red_list[0], num_red_list[1], num_red_list[2], num_red_list[3]);
+							//printf("comp_mask_list:%d.%d.%d.%d \n", comp_mask_list[0], comp_mask_list[1], comp_mask_list[2], comp_mask_list[3]);
+							//printf("broadcast_list:%d.%d.%d.%d \n", broadcast_list[0], broadcast_list[1], broadcast_list[2], broadcast_list[3]);
+							result_str(result,broadcast_list);
+							//printf("Resultado: %s \n",&result);
+							//return (result);
 						}
 					}else{
 						printf("Comando no reconocido, se esperaba comandos MASK \n");
@@ -199,20 +190,23 @@ int main(int  argc, char* argv[])
 					if (IP_ip_correct == 1){
 						printf("ip invalido \n");
 					}else{
-						printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
+						//printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
 
 						if (strcmp(argv[6], "MASK") == 0){
 							Validar_mask(argv[7],maskcalc,mask_list,&MASK_ip_correct);
 							if (MASK_ip_correct == 1){
 								printf("mask invalido \n");
 							}else{
-								printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
+								//printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
 
 								for (int i =0 ; i<4; i++){
 									//NUm red
 									num_red_list[i] = ip_list[i]&mask_list[i] ;
 								}
-								printf("num_red_list:%d.%d.%d.%d \n", num_red_list[0], num_red_list[1], num_red_list[2], num_red_list[3]);
+								//printf("num_red_list:%d.%d.%d.%d \n", num_red_list[0], num_red_list[1], num_red_list[2], num_red_list[3]);
+								result_str(result,num_red_list);
+								//printf("Resultado: %s \n",&result);
+								//return (result);
 							}
 						}else{
 							printf("Comando no reconocido, se esperaba comandos MASK \n");
@@ -246,11 +240,38 @@ int main(int  argc, char* argv[])
 									comp_mask_list[i] = 255^mask_list[i] ;
 									//broadcast
 									broadcast_list[i] = num_red_list[i]|comp_mask_list[i] ;
+									if (i<=2){
+										Start_range_res[i] = num_red_list[i] ;
+										Final_range_res[i] = broadcast_list[i] ;
+									}else{
+										Start_range_res[i] = num_red_list[i];
+										Final_range_res[i] = broadcast_list[i];
+									}
+									
 								}
 								printf("num_red_list:%d.%d.%d.%d \n", num_red_list[0], num_red_list[1], num_red_list[2], num_red_list[3]);
 								printf("comp_mask_list:%d.%d.%d.%d \n", comp_mask_list[0], comp_mask_list[1], comp_mask_list[2], comp_mask_list[3]);
 								printf("broadcast_list:%d.%d.%d.%d \n", broadcast_list[0], broadcast_list[1], broadcast_list[2], broadcast_list[3]);
-								printf("RANGOO: {%d.%d.%d.%d - %d.%d.%d.%d }\n", num_red_list[0], num_red_list[1], num_red_list[2], num_red_list[3]+1, broadcast_list[0], broadcast_list[1], broadcast_list[2], broadcast_list[3]-1);
+								printf("INICIO:%d.%d.%d.%d \n", Start_range_res[0], Start_range_res[1], Start_range_res[2], Start_range_res[3]);
+								printf("fin:%d.%d.%d.%d \n", Final_range_res[0], Final_range_res[1], Final_range_res[2], Final_range_res[3]);
+								
+								
+								if(broadcast_list == num_red_list){
+									Start_range_res[3] = num_red_list[3] +1;
+								}
+								
+									val_fin(broadcast_list,Final_range_res);
+									strcat(result,"{");
+									result_str(result,Start_range_res);
+									strcat(result," - ");
+									result_str(result,Final_range_res);
+									strcat(result,"}");
+									//printf("Resultado: %s \n",&result);
+									printf("INICIO:%d.%d.%d.%d \n", Start_range_res[0], Start_range_res[1], Start_range_res[2], Start_range_res[3]);
+									printf("fin:%d.%d.%d.%d \n", Final_range_res[0], Final_range_res[1], Final_range_res[2], Final_range_res[3]);
+								
+															
+								//return (result);
 							}
 						}else{
 							printf("Comando no reconocido, se esperaba comandos MASK \n");
@@ -302,7 +323,18 @@ int main(int  argc, char* argv[])
 		printf("Comando no reconocido \n");
 	}
 
+    //return result;
+	//return 0;
 
+}
 
-    return 0;
+int main(int argc ,char* argv[]) {
+
+	char result[100]="";
+
+	calc(argv, result);
+
+	printf("%s \n",result);
+	return 0;
+
 }
