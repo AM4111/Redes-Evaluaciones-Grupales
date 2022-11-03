@@ -69,7 +69,8 @@ void calmask(int numMask,char mask[]){
 				strcat(mask,".0");
 			}
 
-		   
+		   //GET BROADCAT IP 10.8.2.5 MASK /29
+		   //GET RANDOM SUBNETS NETWORK NUMBER 10.0.0.0 MASK /8 NUMBER 3 SIZE /24
 		}
     
 	}else{
@@ -298,8 +299,8 @@ void calc(char* buffer,char* result)
 										Start_range_res[i] = num_red_list[i] ;
 										Final_range_res[i] = broadcast_list[i] ;
 									}else{
-										Start_range_res[i] = num_red_list[i];
-										Final_range_res[i] = broadcast_list[i];
+										Start_range_res[i] = num_red_list[i]+1;
+										Final_range_res[i] = broadcast_list[i]-1;
 									}
 									
 								}
@@ -338,12 +339,12 @@ void calc(char* buffer,char* result)
 
 				}
 			}
-		
+		//GET RANDOM SUBNETS NETWORK NUMBER 10.0.0.0 MASK /8 NUMBER 3 SIZE /24
 		}else if (strcmp(buffer_list[1], "RANDOM") == 0){
 			if (strcmp(buffer_list[2], "SUBNETS") == 0){
 				if (strcmp(buffer_list[3], "NETWORK") == 0){
 					if (strcmp(buffer_list[4], "NUMBER") == 0){
-						direct_List(buffer_list[5], num_red_list,&num_red_correct);
+						direct_List(buffer_list[5], ip_list,&IP_ip_correct);
 						if (num_red_correct == 1){
 							//printf("num red invalido \n");
                             strcat(result,"num red invalido \n");
@@ -351,28 +352,43 @@ void calc(char* buffer,char* result)
 						    //printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
 
 						    if (strcmp(buffer_list[6], "MASK") == 0){
+								
                                 Validar_mask(buffer_list[7],maskcalc,mask_list,&MASK_ip_correct);
+								printf("%s \n",maskcalc);
+								printf("%s \n",mask_list);
+								printf("%s \n",MASK_ip_correct);
+								printf("%s \n",buffer_list[7]);
                                 if (MASK_ip_correct == 1){
                                     //printf("mask invalido \n");
                                     strcat(result,"mask invalido \n");
                                 
                                 }else{
                                     //printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
-
-                                
-
                                     if (strcmp(buffer_list[8], "NUMBER") == 0){
-                                        if (buffer_list[9] > 0){
-                                            //printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
-
+										
+				
+                                        if (atoi(buffer_list[9]) > 0){
+											
+                                        	printf("ip1:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
+											//printf("%s",buffer_list[10]);
                                             if (strcmp(buffer_list[10], "SIZE") == 0){
+												printf("ip2:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
+												//GET RANDOM SUBNETS NETWORK NUMBER 10.0.0.0 MASK /8 NUMBER 3 SIZE /24
+												//Validar_mask(buffer_list[7],maskcalc,mask_list,&MASK_ip_correct);
+												
+                                                printf("%s \n",maskcalc_subnet);
+                                                printf("%s \n",mask_list_subnet);
+                                                printf("%s \n",MASK_ip_correct_subnet);
+												printf("%s \n",buffer_list[11]);
                                                 Validar_mask(buffer_list[11],maskcalc_subnet,mask_list_subnet,&MASK_ip_correct_subnet);
-                                                if (MASK_ip_correct_subnet == 1){
+                                                printf("ip3:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
+												if (MASK_ip_correct_subnet == 1){
                                                     //printf("size invalido \n");
                                                     strcat(result,"size invalido \n");
                                                 
                                                 }else{
-                                                    //printf("mask:%d.%d.%d.%d \n", mask_list_subnet[0], mask_list_subnet[1], mask_list_subnet[2], mask_list_subnet[3]);
+													
+                                                    printf("mask:%d.%d.%d.%d \n", mask_list_subnet[0], mask_list_subnet[1], mask_list_subnet[2], mask_list_subnet[3]);
 
                                                 
                                                     for (int i =0 ; i<4; i++){
@@ -387,9 +403,9 @@ void calc(char* buffer,char* result)
                                                             SubNet_res[i]= num_red_list[i] ;
                                                             Final_range_res[i] = broadcast_list[i] ;
                                                         }else{
-                                                            Start_range_res[i] = num_red_list[i];
-                                                            SubNet_res[i]= num_red_list[i] ;
-                                                            Final_range_res[i] = broadcast_list[i];
+                                                            Start_range_res[i] = num_red_list[i]+1;
+                                                            SubNet_res[i]= num_red_list[i] +1;
+                                                            Final_range_res[i] = broadcast_list[i]-1;
                                                         }
                                                         
                                                     }
@@ -478,8 +494,8 @@ int main(int  argc, char* argv[]){
 
   char *ip = "127.0.0.1";
   char result[100]="";
-  char buffer[1024]="";
-  char str[1024] = "x";
+  char buffer[2048]="";
+  char str[2048] = "x";
   int port = 9666;
   char *token;
 
@@ -517,14 +533,14 @@ int main(int  argc, char* argv[]){
     client_sock = accept(server_sock, (struct sockaddr*)&client_addr, &addr_size);
     printf("[+]Client connected.\n");
 
-	bzero(buffer, 1024);
+	bzero(buffer, 2048);
 	strcpy(buffer, "Para salir escriba: x \n");
     //printf("Server: %s\n", buffer);
     send(client_sock, buffer, strlen(buffer), 0);
 
 	int flag = 1;
 	while(flag==1){
-		bzero(buffer, 1024);
+		bzero(buffer, 2048);
 		recv(client_sock, buffer, sizeof(buffer), 0);
 		printf("%d", strcmp(buffer,"x"));
 		strcpy(str, buffer);
@@ -540,7 +556,7 @@ int main(int  argc, char* argv[]){
 			send(client_sock, result, strlen(result), 0);
 
 			bzero(result, 100);
-			bzero(buffer, 1024);
+			bzero(buffer, 2048);
 			strcpy(buffer, "\nPara salir escriba: x \n");
 			//printf("Server: %s\n", buffer);
 			send(client_sock, buffer, strlen(buffer), 0);
@@ -548,7 +564,7 @@ int main(int  argc, char* argv[]){
 		
 
 	}
-	bzero(buffer, 1024);
+	bzero(buffer, 2048);
     strcpy(buffer, "DESCONECTADO!");
 	send(client_sock, buffer, strlen(buffer), 0);
 	close(client_sock);
