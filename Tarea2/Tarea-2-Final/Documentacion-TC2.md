@@ -4,6 +4,7 @@ Escuela de Ingeniería en Computación.
 
 IC: 7602-Redes - 2 Semestre 2022.
 
+2018093728 - Paula Mariana Bustos Vargas <br> 
 2018086509 - Jocxan Sandi Batista.
 
 ---
