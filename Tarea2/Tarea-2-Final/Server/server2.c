@@ -6,6 +6,26 @@
 #include <arpa/inet.h>
 #include <math.h>
 
+void ip_binary(unsigned long result,int valores[4]){
+	
+	for(int value = 3 ; value >= 0 ; value--)
+	{	
+		valores[value]= result & 255;
+		result = result >> 8 ;
+	}
+
+}
+
+//retorna int de de la operacion 
+unsigned long int  ip_INT(int list[4]){
+	unsigned long int result=0;
+	for(int value = 0 ; value < 4 ; value++)
+	{	
+		result = result << 8 ;
+		result = result | list[value];
+	}
+	return  result;
+}
 
 // transform /# -> #.#.#.#
 void calmask(int numMask,char mask[]){
@@ -143,40 +163,46 @@ void calc(char* buffer,char* result)
 			c_direct = strtok(NULL, " ");
 			index++;
     	}	
-	//printf("PRUEBA 2: %s\n", buffer_list[0]);
+
     char maskcalc[16]="",
     del_semicolon[] = ";",
     del_backslash[] = "/";
 
 	int IP_ip_correct  = 0;
 	int MASK_ip_correct  = 0;
+	int MASK_ip_correct_subnet  = 0;
 	int num_red_correct  = 0;
 
 
     int list_mask[5] ;
 	int comp_mask_list[4] ;
+	int SubNet_res[4] ;
 	int num_red_list[4] ;
 	int broadcast_list[4] ;
 	int mask_list[4] ;
+	int mask_list_subnet[4] ;
 	int ip_list[4];
 	int Start_range_res[4];
 	int Final_range_res[4];
 
     unsigned char* mask_cal;
+	unsigned char* maskcalc_subnet;
 
 	if (strcmp(buffer_list[0], "GET") == 0){
 		if (strcmp(buffer_list[1], "BROADCAST") == 0){
 			if (strcmp(buffer_list[2], "IP") == 0){
 				direct_List(buffer_list[3], ip_list,&IP_ip_correct);
 				if (IP_ip_correct == 1){
-					printf("ip invalido \n");
+					//printf("ip invalido \n");
+					strcat(result,"ip invalido \n");
 				}else{
 					//printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
 
 					if (strcmp(buffer_list[4], "MASK") == 0){
 						Validar_mask(buffer_list[5],maskcalc,mask_list,&MASK_ip_correct);
 						if (MASK_ip_correct == 1){
-							printf("mask invalido \n");
+							//printf("mask invalido \n");
+							strcat(result,"mask invalido \n");
 						}else{
 							//printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
 
@@ -196,26 +222,30 @@ void calc(char* buffer,char* result)
 							//return (result);
 						}
 					}else{
-						printf("Comando no reconocido, se esperaba comandos MASK \n");
+						//printf("Comando no reconocido, se esperaba comandos MASK \n");
+						strcat(result,"Comando no reconocido, se esperaba comandos MASK \n");
 					}
 				}
 			}
 			else{
-				printf("Comando no reconocido, se esperaba comandos IP \n");
+				//printf("Comando no reconocido, se esperaba comandos IP \n");
+				strcat(result,"Comando no reconocido, se esperaba comandos IP \n");
 			}
 		}else if (strcmp(buffer_list[1], "NETWORK") == 0){
 			if (strcmp(buffer_list[2], "NUMBER") == 0){
 				if (strcmp(buffer_list[3], "IP") == 0){
 					direct_List(buffer_list[4], ip_list,&IP_ip_correct);
 					if (IP_ip_correct == 1){
-						printf("ip invalido \n");
+						//printf("ip invalido \n");
+						strcat(result,"ip invalido \n");
 					}else{
 						//printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
 
 						if (strcmp(buffer_list[5], "MASK") == 0){
 							Validar_mask(buffer_list[6],maskcalc,mask_list,&MASK_ip_correct);
 							if (MASK_ip_correct == 1){
-								printf("mask invalido \n");
+								//printf("mask invalido \n");
+								strcat(result,"mask invalido \n");
 							}else{
 								//printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
 
@@ -229,11 +259,13 @@ void calc(char* buffer,char* result)
 								//return (result);
 							}
 						}else{
-							printf("Comando no reconocido, se esperaba comandos MASK \n");
+							//printf("Comando no reconocido, se esperaba comandos MASK \n");
+							strcat(result,"Comando no reconocido, se esperaba comandos MASK \n");
 						}
 					}
 				}else{
-					printf("Comando no reconocido, se esperaba comandos IP \n");
+					//printf("Comando no reconocido, se esperaba comandos IP \n");
+					strcat(result,"Comando no reconocido, se esperaba comandos IP \n");
 				}
 			}
 		
@@ -242,16 +274,18 @@ void calc(char* buffer,char* result)
 				if (strcmp(buffer_list[3], "IP") == 0){
 					direct_List(buffer_list[4], ip_list,&IP_ip_correct);
 					if (IP_ip_correct == 1){
-						printf("ip invalido \n");
+						//printf("ip invalido \n");
+						strcat(result,"ip invalido \n");
 					}else{
-						printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
+						//printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
 
 						if (strcmp(buffer_list[5], "MASK") == 0){
 							Validar_mask(buffer_list[6],maskcalc,mask_list,&MASK_ip_correct);
 							if (MASK_ip_correct == 1){
-								printf("mask invalido \n");
+								//printf("mask invalido \n");
+								strcat(result,"mask invalido \n");
 							}else{
-								printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
+								//printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
 
 								for (int i =0 ; i<4; i++){
 									//NUm red
@@ -264,16 +298,16 @@ void calc(char* buffer,char* result)
 										Start_range_res[i] = num_red_list[i] ;
 										Final_range_res[i] = broadcast_list[i] ;
 									}else{
-										Start_range_res[i] = num_red_list[i]+1;
-										Final_range_res[i] = broadcast_list[i]-1;
+										Start_range_res[i] = num_red_list[i];
+										Final_range_res[i] = broadcast_list[i];
 									}
 									
 								}
-								printf("num_red_list:%d.%d.%d.%d \n", num_red_list[0], num_red_list[1], num_red_list[2], num_red_list[3]);
-								printf("comp_mask_list:%d.%d.%d.%d \n", comp_mask_list[0], comp_mask_list[1], comp_mask_list[2], comp_mask_list[3]);
-								printf("broadcast_list:%d.%d.%d.%d \n", broadcast_list[0], broadcast_list[1], broadcast_list[2], broadcast_list[3]);
-								printf("INICIO:%d.%d.%d.%d \n", Start_range_res[0], Start_range_res[1], Start_range_res[2], Start_range_res[3]);
-								printf("fin:%d.%d.%d.%d \n", Final_range_res[0], Final_range_res[1], Final_range_res[2], Final_range_res[3]);
+								//printf("num_red_list:%d.%d.%d.%d \n", num_red_list[0], num_red_list[1], num_red_list[2], num_red_list[3]);
+								//printf("comp_mask_list:%d.%d.%d.%d \n", comp_mask_list[0], comp_mask_list[1], comp_mask_list[2], comp_mask_list[3]);
+								//printf("broadcast_list:%d.%d.%d.%d \n", broadcast_list[0], broadcast_list[1], broadcast_list[2], broadcast_list[3]);
+								//printf("INICIO:%d.%d.%d.%d \n", Start_range_res[0], Start_range_res[1], Start_range_res[2], Start_range_res[3]);
+								//printf("fin:%d.%d.%d.%d \n", Final_range_res[0], Final_range_res[1], Final_range_res[2], Final_range_res[3]);
 								
 								
 								if(broadcast_list == num_red_list){
@@ -287,60 +321,154 @@ void calc(char* buffer,char* result)
 									result_str(result,Final_range_res);
 									strcat(result,"}");
 									//printf("Resultado: %s \n",&result);
-									printf("INICIO:%d.%d.%d.%d \n", Start_range_res[0], Start_range_res[1], Start_range_res[2], Start_range_res[3]);
-									printf("fin:%d.%d.%d.%d \n", Final_range_res[0], Final_range_res[1], Final_range_res[2], Final_range_res[3]);
+									//printf("INICIO:%d.%d.%d.%d \n", Start_range_res[0], Start_range_res[1], Start_range_res[2], Start_range_res[3]);
+									//printf("fin:%d.%d.%d.%d \n", Final_range_res[0], Final_range_res[1], Final_range_res[2], Final_range_res[3]);
 								
 															
 								//return (result);
 							}
 						}else{
-							printf("Comando no reconocido, se esperaba comandos MASK \n");
+							//printf("Comando no reconocido, se esperaba comandos MASK \n");
+							strcat(result,"Comando no reconocido, se esperaba comandos MASK \n");
 						}
 					}
 				}else{
-					printf("Comando no reconocido, se esperaba comandos IP \n");
+					//printf("Comando no reconocido, se esperaba comandos IP \n");
+					strcat(result,"Comando no reconocido, se esperaba comandos IP \n");
+
 				}
 			}
 		
-		}/*else if (strcmp(argv[2], "RANDOM") == 0){
-			if (strcmp(argv[3], "SUBNETS") == 0){
-				if (strcmp(argv[4], "NETWORK") == 0){
-					if (strcmp(argv[4], "NUMBER") == 0){
-						direct_List(argv[5], num_red_list,&num_red_correct);
+		}else if (strcmp(buffer_list[1], "RANDOM") == 0){
+			if (strcmp(buffer_list[2], "SUBNETS") == 0){
+				if (strcmp(buffer_list[3], "NETWORK") == 0){
+					if (strcmp(buffer_list[4], "NUMBER") == 0){
+						direct_List(buffer_list[5], num_red_list,&num_red_correct);
 						if (num_red_correct == 1){
-							printf("num red invalido \n");
+							//printf("num red invalido \n");
+                            strcat(result,"num red invalido \n");
 						}else{
-							printf("num_red:%d.%d.%d.%d \n", num_red_list[0], num_red_list[1], num_red_list[2], num_red_list[3]);
-							if (strcmp(argv[6], "MASK") == 0){
-								Validar_mask(argv[7],maskcalc,mask_list,&MASK_ip_correct);
-								if (MASK_ip_correct == 1){
-									printf("mask invalido \n");
-								}else{
-									printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
-									
-								}
-							}else{
-								printf("Comando no reconocido, se esperaba comandos MASK \n");
-							}
+						    //printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
+
+						    if (strcmp(buffer_list[6], "MASK") == 0){
+                                Validar_mask(buffer_list[7],maskcalc,mask_list,&MASK_ip_correct);
+                                if (MASK_ip_correct == 1){
+                                    //printf("mask invalido \n");
+                                    strcat(result,"mask invalido \n");
+                                
+                                }else{
+                                    //printf("mask:%d.%d.%d.%d \n", mask_list[0], mask_list[1], mask_list[2], mask_list[3]);
+
+                                
+
+                                    if (strcmp(buffer_list[8], "NUMBER") == 0){
+                                        if (buffer_list[9] > 0){
+                                            //printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
+
+                                            if (strcmp(buffer_list[10], "SIZE") == 0){
+                                                Validar_mask(buffer_list[11],maskcalc_subnet,mask_list_subnet,&MASK_ip_correct_subnet);
+                                                if (MASK_ip_correct_subnet == 1){
+                                                    //printf("size invalido \n");
+                                                    strcat(result,"size invalido \n");
+                                                
+                                                }else{
+                                                    //printf("mask:%d.%d.%d.%d \n", mask_list_subnet[0], mask_list_subnet[1], mask_list_subnet[2], mask_list_subnet[3]);
+
+                                                
+                                                    for (int i =0 ; i<4; i++){
+                                                        //NUm red
+                                                        num_red_list[i] = ip_list[i]&mask_list[i] ;
+                                                        // saca complemento de la mascara
+                                                        comp_mask_list[i] = 255^mask_list[i] ;
+                                                        //broadcast
+                                                        broadcast_list[i] = num_red_list[i]|comp_mask_list[i] ;
+                                                        if (i<=2){
+                                                            Start_range_res[i] = num_red_list[i] ;
+                                                            SubNet_res[i]= num_red_list[i] ;
+                                                            Final_range_res[i] = broadcast_list[i] ;
+                                                        }else{
+                                                            Start_range_res[i] = num_red_list[i];
+                                                            SubNet_res[i]= num_red_list[i] ;
+                                                            Final_range_res[i] = broadcast_list[i];
+                                                        }
+                                                        
+                                                    }
+                                                    
+                                                    if(broadcast_list == num_red_list){
+                                                        Start_range_res[3] = num_red_list[3] +1;
+                                                    }
+                                                    
+                                                    val_fin(broadcast_list,Final_range_res);
+
+                                                    // complemento de la mascara se manda a funcion 
+                                                    unsigned long int  num_hosts = ip_INT(comp_mask_list);
+                                                    
+                                                    //divide entre num red solicitadas genera tamanno_subnet
+                                                    unsigned long int tamanno_subnet  = num_hosts/atoi(buffer_list[9]);
+
+                                                    for(int i = 0 ; i < atoi(buffer_list[9])-1; i++){
+                                                        // #subnet uiltima se manda a funcion 
+                                                        unsigned long int  num_subnet = ip_INT(SubNet_res);
+
+                                                        ip_binary(num_subnet,SubNet_res);
+
+                                                        result_str(result,SubNet_res);    
+                                                        strcat(result," "); 
+                                                        strcat(result,buffer_list[11]);   
+                                                        strcat(result,"\n"); 
+
+                                                        num_subnet +=tamanno_subnet;
+                                                    }                         
+                                                    
+                                                }
+                                            }else{
+                                                //printf("Comando no reconocido, se esperaba comandos SIZE \n");
+                                                strcat(result,"Comando no reconocido, se esperaba comando SIZE \n");
+                                            }
+
+                                        }
+                                        
+                                        else{
+                                            //printf("num  invalido \n");
+                                            strcat(result,"num  invalido \n");
+                                        }
+                                    }else{
+                                        //printf("Comando no reconocido, se esperaba comando NUMBER \n");
+                                        strcat(result,"Comando no reconocido, se esperaba comando NUMBER \n");
+                                    }
+                                        
+                                                                
+                                    
+                                }
+                            }else{
+                                //printf("Comando no reconocido, se esperaba comandos MASK \n");
+                                strcat(result,"Comando no reconocido, se esperaba comando MASK \n");
+                            }
+
 						}
-					}
+					
 					}else{
-						printf("Comando no reconocido, se esperaba comandos NUMBER \n");
+						//printf("Comando no reconocido, se esperaba comando NUMBER \n");
+                        strcat(result,"Comando no reconocido, se esperaba comando NUMBER \n");
 					}
 				}else{
-					printf("Comando no reconocido, se esperaba comandos NETWORK \n");
+					//printf("Comando no reconocido, se esperaba comandos NETWORK \n");
+                    strcat(result,"Comando no reconocido, se esperaba comandos NETWORK \n");
 				}
 			}else{
-				printf("Comando no reconocido, se esperaba comandos SUBNETS \n");
+				//printf("Comando no reconocido, se esperaba comandos SUBNETS \n");
+                strcat(result,"Comando no reconocido, se esperaba comandos SUBNETS \n");
 			}
-		}*/
+		}
 		else{
-		printf("Comando no reconocido, se esperaba alguno de los siguientes comandos (BROADCAST,NETWORK,HOSTS,RANDOM) \n");
+		//printf("Comando no reconocido, se esperaba alguno de los siguientes comandos (BROADCAST,NETWORK,HOSTS,RANDOM) \n");
+		strcat(result,"Comando no reconocido, se esperaba alguno de los siguientes comandos (BROADCAST,NETWORK,HOSTS,RANDOM)\n");
 		}
 	}else{
-		printf("Comando no reconocido \n");
+		//printf("Comando no reconocido \n");
+		strcat(result,"Comando no reconocido, se esperaba comandos GET \n");
 	}
-	printf("PRUEBA: %s\n", result);
+
     //return result;
 	//return 0;
 
