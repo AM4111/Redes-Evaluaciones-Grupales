@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calculadora
+spec:
+  selector:
+    matchLabels:
+      app: calculadora
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: calculadora
+    spec:
+      containers:
+      - name: server
+        image: jocxans7/server-tcp
+        env:
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "200m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        # readinessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 9666
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 10
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: 9666
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 20
+        ports:
+        - containerPort: 9666
+
+      - name: ubuntu
+        image: jocxans7/ubuntu-cliente
+        command: ["/bin/sleep", "3650d"]
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "200m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        # readinessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 9667
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 10
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: 9667
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 20
+        ports:
+        - containerPort: 9667

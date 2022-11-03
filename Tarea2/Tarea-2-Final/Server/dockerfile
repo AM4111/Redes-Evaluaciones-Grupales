@@ -1,0 +1,11 @@
+FROM gcc:4.9
+
+WORKDIR /server
+
+COPY server2.c /server
+
+RUN gcc -o myapp server2.c -lm -std=gnu99
+CMD ["./myapp"]
+
+#docker build -t server .
+#docker run -it --rm --name container server
