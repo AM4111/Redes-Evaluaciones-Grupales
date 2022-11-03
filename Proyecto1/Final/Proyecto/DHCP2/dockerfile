@@ -1,7 +1,8 @@
 FROM networkboot/dhcpd
 
-WORKDIR /proyecto/DHCP2/
+WORKDIR /data
 
-COPY . /proyecto/DHCP2/
+COPY data/. .
 
-CMD ["/dhcpd.conf"]
+
+# CMD ["/dhcpd.conf"]

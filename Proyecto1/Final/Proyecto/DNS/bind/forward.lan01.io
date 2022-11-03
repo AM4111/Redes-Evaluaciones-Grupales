@@ -8,5 +8,5 @@ $TTL    1D
 
 ;       Registros NS
 
-        IN      NS      lan.01.io.
+        IN      NS      lan01.io.
 dhcp1   IN      A       10.0.0.4

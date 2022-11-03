@@ -1,17 +1,14 @@
 zone "lan01.io" IN {
         type master;
-        file "/etc/bind/forward.lan01.io
-";
+        file "/etc/bind/forward.lan01.io";
 };
 
 zone "lan02.io" IN {
         type master;
-        file "/etc/bind/forward.lan02.io
-";
+        file "/etc/bind/forward.lan02.io";
 };
 
 zone "google.com" IN {
         type master;
-        file "/etc/bind/forward.google.com
-";
+        file "/etc/bind/forward.google.com";
 };

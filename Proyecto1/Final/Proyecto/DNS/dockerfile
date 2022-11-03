@@ -1,6 +1,10 @@
 FROM ubuntu/bind9
 
-WORKDIR /Proyecto/DNS/bind
+RUN apt-get update
 
-COPY . /Proyecto/DNS/bind/
+RUN apt-get install dnsutils -y 
+
+WORKDIR /etc/bind
+
+COPY bind/. .
 
