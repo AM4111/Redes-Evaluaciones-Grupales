@@ -54,6 +54,7 @@ void calmask(int numMask,char mask[]){
 
 }
 
+// pasa de #.#.#.# a lista [#,#,#,#]
 void direct_List(char* p_direct, int* list_direct, int* ip_correct){
 		char *c_direct = strtok(p_direct,".");
 		int index = 0;
@@ -69,6 +70,7 @@ void direct_List(char* p_direct, int* list_direct, int* ip_correct){
 
 }
 
+// Valida la mascara y si la mascara entra en formato /# la convierte a #.#.#.#
 void Validar_mask(char* p_direct, char* maskcalc,int* mask_list, int* ip_correct){
 	if (strrchr(p_direct , '/')!= NULL){
 		char *cadena = strtok(p_direct,"/");
@@ -86,6 +88,7 @@ void Validar_mask(char* p_direct, char* maskcalc,int* mask_list, int* ip_correct
 	}	
 }
 
+//convierte el resultado a string para retornar
 void result_str(char* result, int* list){
 	for (int i =0 ; i<4; i++){
 		char string[3]="";
@@ -98,6 +101,7 @@ void result_str(char* result, int* list){
 	}	
 }
 
+//Genera el numero final del hhost posible
 void val_fin(int* broadcast_list,int* Final_range_res){
 
 	if(broadcast_list[3] == 0){
@@ -121,9 +125,21 @@ void val_fin(int* broadcast_list,int* Final_range_res){
 	}
 }
 
-void calc(char* argv[],char* result)
+// Realiza las solicitudes de calculadora
+void calc(char* buffer,char* result)
 {
 // variables
+	char* buffer_list[100];
+
+	char *c_direct = strtok(buffer," ");
+	int index = 0;
+	while (c_direct != NULL )
+    	{	
+			buffer_list[index] = c_direct;
+			c_direct = strtok(NULL, " ");
+			index++;
+    	}	
+
     char maskcalc[16]="",
     del_semicolon[] = ";",
     del_backslash[] = "/";
@@ -144,17 +160,17 @@ void calc(char* argv[],char* result)
 
     unsigned char* mask_cal;
 
-	if (strcmp(argv[1], "GET") == 0){
-		if (strcmp(argv[2], "BROADCAST") == 0){
-			if (strcmp(argv[3], "IP") == 0){
-				direct_List(argv[4], ip_list,&IP_ip_correct);
+	if (strcmp(buffer_list[1], "GET") == 0){
+		if (strcmp(buffer_list[2], "BROADCAST") == 0){
+			if (strcmp(buffer_list[3], "IP") == 0){
+				direct_List(buffer_list[4], ip_list,&IP_ip_correct);
 				if (IP_ip_correct == 1){
 					printf("ip invalido \n");
 				}else{
 					//printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
 
-					if (strcmp(argv[5], "MASK") == 0){
-						Validar_mask(argv[6],maskcalc,mask_list,&MASK_ip_correct);
+					if (strcmp(buffer_list[5], "MASK") == 0){
+						Validar_mask(buffer_list[6],maskcalc,mask_list,&MASK_ip_correct);
 						if (MASK_ip_correct == 1){
 							printf("mask invalido \n");
 						}else{
@@ -183,17 +199,17 @@ void calc(char* argv[],char* result)
 			else{
 				printf("Comando no reconocido, se esperaba comandos IP \n");
 			}
-		}else if (strcmp(argv[2], "NETWORK") == 0){
-			if (strcmp(argv[3], "NUMBER") == 0){
-				if (strcmp(argv[4], "IP") == 0){
-					direct_List(argv[5], ip_list,&IP_ip_correct);
+		}else if (strcmp(buffer_list[2], "NETWORK") == 0){
+			if (strcmp(buffer_list[3], "NUMBER") == 0){
+				if (strcmp(buffer_list[4], "IP") == 0){
+					direct_List(buffer_list[5], ip_list,&IP_ip_correct);
 					if (IP_ip_correct == 1){
 						printf("ip invalido \n");
 					}else{
 						//printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
 
-						if (strcmp(argv[6], "MASK") == 0){
-							Validar_mask(argv[7],maskcalc,mask_list,&MASK_ip_correct);
+						if (strcmp(buffer_list[6], "MASK") == 0){
+							Validar_mask(buffer_list[7],maskcalc,mask_list,&MASK_ip_correct);
 							if (MASK_ip_correct == 1){
 								printf("mask invalido \n");
 							}else{
@@ -217,17 +233,17 @@ void calc(char* argv[],char* result)
 				}
 			}
 		
-		}else if (strcmp(argv[2], "HOSTS") == 0){
-			if (strcmp(argv[3], "RANGE") == 0){
-				if (strcmp(argv[4], "IP") == 0){
-					direct_List(argv[5], ip_list,&IP_ip_correct);
+		}else if (strcmp(buffer_list[2], "HOSTS") == 0){
+			if (strcmp(buffer_list[3], "RANGE") == 0){
+				if (strcmp(buffer_list[4], "IP") == 0){
+					direct_List(buffer_list[5], ip_list,&IP_ip_correct);
 					if (IP_ip_correct == 1){
 						printf("ip invalido \n");
 					}else{
 						printf("ip:%d.%d.%d.%d \n", ip_list[0], ip_list[1], ip_list[2], ip_list[3]);
 
-						if (strcmp(argv[6], "MASK") == 0){
-							Validar_mask(argv[7],maskcalc,mask_list,&MASK_ip_correct);
+						if (strcmp(buffer_list[6], "MASK") == 0){
+							Validar_mask(buffer_list[7],maskcalc,mask_list,&MASK_ip_correct);
 							if (MASK_ip_correct == 1){
 								printf("mask invalido \n");
 							}else{
@@ -332,7 +348,18 @@ int main(int argc ,char* argv[]) {
 
 	char result[100]="";
 
-	calc(argv, result);
+	char buffer[1024]=" ";
+
+	for (int i =0; i<argc;i++){
+		strcat(buffer,argv[i]);
+		strcat(buffer," ");
+	}
+	printf("%s",buffer);
+
+	//calc(argv, result);
+	
+	calc(buffer, result);
+
 
 	printf("%s \n",result);
 	return 0;
