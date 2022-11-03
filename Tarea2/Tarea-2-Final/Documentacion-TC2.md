@@ -52,6 +52,8 @@ helm install helm calculadora/tarea
 
 - Otra forma de abrir este terminal es con el siguiente comando en la terminal de ubuntu **docker exec -it id-container  bin/sh**. Para saber este id-container escribir en la terminal de ubuntu **docker ps** y aquí les saldrá sus contenedores, este programa instala 2, pero estamos con el de nombre **k8s_ubuntu_calculadora-** por lo que les saldrá y su id-container.
 
+![Imagen2 ](imagenes/docker-ps.png ) 
+
 - Una vez este en el terminal del contenedor escribir **telnet 127.0.0.1 9666**. Este los conectará al server y podrán hacer consultas a la calculadora. 
 
 ### Ejemplos de consultas:
@@ -60,6 +62,8 @@ helm install helm calculadora/tarea
 3. GET NETWORK NUMBER IP 10.8.2.5 MASK /29
 4. GET NETWORK NUMBER IP 172.16.0.56 MASK 255.255.255.128
 
+
+![Imagen2 ](imagenes/prueba.png ) 
 
 **NOTA:** TENER CUIDADO CON LOS ESPACIOS EN BLANCO Y RESPETAR LOS ESPACIOS ENTRE PARÁMETROS.
 
