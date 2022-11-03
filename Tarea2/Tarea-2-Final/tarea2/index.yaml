@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  tarea:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-11-02T14:22:45.4875391-06:00"
+    description: A Helm chart for Kubernetes
+    digest: 47ebe0cd4492b27f492f93244fe8026d9f8936bad7c181ff53dd13a0baa26503
+    name: tarea
+    type: application
+    urls:
+    - tarea-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-11-02T14:22:45.4776398-06:00"
