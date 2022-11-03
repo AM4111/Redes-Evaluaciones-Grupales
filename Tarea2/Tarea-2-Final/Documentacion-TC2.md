@@ -29,7 +29,7 @@ Se usa un servidor TCP que espera la conexión de un cliente por medio de un soc
 
 Para realizar un cliente y poder hacer uso de la calculadora se utiliza la imagen de ubuntu con unas herramientas para realizar consultas al servidor por medio de telnet.
 
-Herramientas instaladas en la imagen de ubuntu. Esta se puede encontrar en la carpeta Ubuntu, se hizo una imagen y se subió para el uso en helm.
+Herramientas instaladas en la imagen de ubuntu. Esta se puede encontrar en la carpeta Ubuntu, se hizo una imagen y se subió para el uso en helm chart.
 
 <pre><code>
 RUN apt-get update -y
@@ -88,10 +88,12 @@ docker build -t jocxans7/ubuntu-cliente .
 3. Helm Chart: **Se sube al github pages**
 
 <pre><code>
+helm create tarea
 helm package tarea/ #Empaqueta los archivos del helm  chart
 helm repo index .   #Crea un archivo index 
 </code></pre>
 
+Se eliminaron unos archivos cuando se creo el helm chart.
 
 ## Referencias 
 > https://www.youtube.com/watch?v=DCoBcpOA7W4&t=929s&ab_channel=PeladoNerd
